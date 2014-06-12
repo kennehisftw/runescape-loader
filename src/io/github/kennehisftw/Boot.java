@@ -112,10 +112,10 @@ public class Boot {
         /*
             Instantiate the applet instance with the preferred parameters.
          */
-        applet = new RSApplet(userLoader.getProperty("home-world").isEmpty() ? 1 :
-                Integer.parseInt(userLoader.getProperty("home-world")),
-                userLoader.getProperty("client-type").isEmpty() ? userLoader.getProperty("client-type").equals("rs3") :
-                        userLoader.getProperty("client-type").equals("oldschool")
+        final String clientType = userLoader.getProperty("client-type");
+        final String homeWorld = userLoader.getProperty("home-world");
+        applet = new RSApplet(homeWorld.isEmpty() ? 1 : Integer.parseInt(homeWorld),
+                clientType.isEmpty() ? clientType.equals("rs3") : clientType.equals("oldschool")
         );
 
         /*
