@@ -1,4 +1,4 @@
 .git/*
 .idea/*
 out/*
-.gitignore
+/*.gitignore
