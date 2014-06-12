@@ -1,4 +1,5 @@
+# no rules here bub
 .git/*
 .idea/*
 out/*
-/*.gitignore
+.gitignore
