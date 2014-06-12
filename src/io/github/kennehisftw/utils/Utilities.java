@@ -22,14 +22,24 @@ public class Utilities {
     public static boolean downloadFile(String url, String location) {
         try {
 
-            final File destination = new File(location);
-            if(destination.exists()) {
-                System.out.println("File already exists, skipping download.");
-                return true;
-            }
-
             final URLConnection connection = new URL(url).openConnection();
             connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
+
+            final int contentLength = connection.getContentLength();
+            System.out.println("URLConnection content length: " + contentLength);
+
+            final File destination = new File(location);
+            if(destination.exists()) {
+                System.out.println("File already exists, checking size.");
+                final URLConnection savedFileConnection = destination.toURI().toURL().openConnection();
+                System.out.println("Saved content length: " + savedFileConnection.getContentLength());
+                if(savedFileConnection.getContentLength() == contentLength) {
+                    System.out.println("File with the same content length and name exists, skipping download.");
+                    return true;
+                } else {
+                    System.out.println("Content size doesn't match, redownloading.");
+                }
+            }
 
             final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
 

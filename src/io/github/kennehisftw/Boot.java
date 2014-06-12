@@ -2,11 +2,11 @@ package io.github.kennehisftw;
 
 import com.alee.laf.WebLookAndFeel;
 import io.github.kennehisftw.loader.RSApplet;
+import io.github.kennehisftw.swing.UserdataSelector;
+import io.github.kennehisftw.utils.UserLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by Kenneth on 6/12/2014.
@@ -19,9 +19,14 @@ public class Boot {
     private final JFrame frame;
 
     /*
+        Create a new UserLoader instance
+     */
+    private UserLoader userLoader;
+
+    /*
         Create an applet object
      */
-    private final RSApplet applet;
+    private RSApplet applet;
 
     /*
         Creates a JMenuBar object
@@ -36,7 +41,7 @@ public class Boot {
     /*
         Creates the JMenuItems for the fileMenu
      */
-    private final JMenuItem hiscoresButton, worldSelectButton, exitButton;
+    private final JMenuItem hiscoresButton, userDataButton, exitButton;
 
     public Boot() {
         /*
@@ -73,7 +78,7 @@ public class Boot {
             Instantiate the menu buttons
          */
         hiscoresButton = new JMenuItem("Hiscores lookup");
-        worldSelectButton = new JMenuItem("World select");
+        userDataButton = new JMenuItem("Set user defaults");
         exitButton = new JMenuItem("Exit");
 
         /*
@@ -87,19 +92,36 @@ public class Boot {
             Add all JMenuItems to the JMenu
          */
         fileMenu.add(hiscoresButton);
-        fileMenu.add(worldSelectButton);
+        fileMenu.add(userDataButton);
         fileMenu.add(new JSeparator());
         fileMenu.add(exitButton);
 
         /*
+            Add the action listener for the WorldSelection button
+         */
+        userDataButton.addActionListener(action -> {
+            final UserdataSelector selector = new UserdataSelector(userLoader);
+            selector.setVisible(true);
+        });
+
+        /*
+            Instantiate the UserLoader
+         */
+        userLoader = new UserLoader();
+
+        /*
             Instantiate the applet instance with the preferred parameters.
          */
-        applet = new RSApplet(42, false);
+        applet = new RSApplet(userLoader.getProperty("home-world").isEmpty() ? 1 :
+                Integer.parseInt(userLoader.getProperty("home-world")),
+                userLoader.getProperty("client-type").isEmpty() ? userLoader.getProperty("client-type").equals("rs3") :
+                        userLoader.getProperty("client-type").equals("oldschool")
+        );
 
         /*
             Set the preferred size of the parent frame
          */
-        frame.setPreferredSize(new Dimension(1280, 720));
+        frame.setPreferredSize(new Dimension(800, 600));
 
         /*
             Add the applet to the content pane of the parent frame
@@ -125,6 +147,30 @@ public class Boot {
             Refresh all components on the parent frame
          */
         SwingUtilities.updateComponentTreeUI(frame);
+    }
+
+    /**
+     * Sets the RSApplet object
+     * @param applet the new applet
+     */
+    public void setApplet(RSApplet applet) {
+        this.applet = applet;
+    }
+
+    /**
+     * Getter for the parent frame
+     * @return JFrame parent
+     */
+    public JFrame getParent() {
+        return frame;
+    }
+
+    /**
+     * Getter for rsapplet to easily manipulate it
+     * @return RSApplet object
+     */
+    public RSApplet getApplet() {
+        return applet;
     }
 
     public static void main(String[] args) {

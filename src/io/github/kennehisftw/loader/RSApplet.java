@@ -87,12 +87,12 @@ public class RSApplet extends JPanel implements AppletStub {
             Downloads the gamepack from the website using parameters
          */
         Utilities.downloadFile(parameters.getParameter("codebase") + parameters.getParameter("initial_jar"),
-                System.getProperty("java.io.tmpdir") + parameters.getParameter("initial_jar"));
+                System.getProperty("java.io.tmpdir") + "gamepack.jar");
 
         /*
             Create a new file with the location of the gamepack we had just downloaded.
          */
-        final File jar = new File(System.getProperty("java.io.tmpdir") + parameters.getParameter("initial_jar"));
+        final File jar = new File(System.getProperty("java.io.tmpdir") + "gamepack.jar");
 
         /*
             Create a new URLClassLoader using the jar

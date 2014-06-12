@@ -1,6 +1,8 @@
 package io.github.kennehisftw.swing;
 
 import com.alee.laf.WebLookAndFeel;
+import io.github.kennehisftw.Boot;
+import io.github.kennehisftw.utils.UserLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,17 +10,28 @@ import java.awt.*;
 /**
  * Created by Kenneth on 6/12/2014.
  */
-public class WorldSelector extends JFrame {
+public class UserdataSelector extends JFrame {
 
     /*
         Creates a new JRadioButton object for rs3 selection
      */
     private final JRadioButton rs3Button;
 
+
+    /*
+        Creates a new UserLoader instance to store our settings
+     */
+    private final UserLoader loader;
+
     /*
         Creates a new JRadioButton object for 07 selection
      */
     private final JRadioButton oldschoolButton;
+
+    /*
+        Creates a new JtextField to store the account name
+     */
+    private final JTextField accountName;
 
     /*
         Creates a new JSpinner object for world selection
@@ -40,13 +53,29 @@ public class WorldSelector extends JFrame {
      */
     private final SpinnerModel spinnerModel;
 
-    public WorldSelector() {
-        super("World Selector");
+    public UserdataSelector(final UserLoader loader) {
+        super("Default Information");
+
+        /*
+            Assign the UserLoader object
+         */
+        this.loader = loader;
 
         /*
             Set the layout of the parent contentPane()
          */
         getContentPane().setLayout(new BorderLayout());
+
+        /*
+            Instantiate the textArea
+         */
+        accountName = new JTextField(20);
+        accountName.setText(loader.getProperty("user"));
+
+        /*
+            Add a tooltip to explain what it is
+         */
+        accountName.setToolTipText("Your IGN to pull Hiscore data");
 
         /*
             Instantiate the toggleButton objects
@@ -55,9 +84,22 @@ public class WorldSelector extends JFrame {
         oldschoolButton = new JRadioButton("OldSchool Runescape");
 
         /*
+            Set the correct button selected based on user data
+         */
+        final String clientType = loader.getProperty("client-type");
+        if(!clientType.isEmpty()) {
+            if(clientType.equals("rs3")) {
+                rs3Button.setSelected(true);
+            } else {
+                oldschoolButton.setSelected(true);
+            }
+        }
+
+        /*
             Creates a spinner model to better control the spinner
          */
-        spinnerModel = new SpinnerNumberModel(42, 0, 200, 1); //default value,lower bound,upper bound,increment by
+        spinnerModel = new SpinnerNumberModel(loader.getProperty("home-world").isEmpty() ? 1 :
+                Integer.parseInt(loader.getProperty("home-world")), 0, 200, 1); //default value,lower bound,upper bound,increment by
         /*
             Initialize the JSpinner
          */
@@ -69,11 +111,6 @@ public class WorldSelector extends JFrame {
         final Dimension dims = spinner.getSize();
         dims.width += 75;
         spinner.setSize(dims);
-
-        /*
-            By default, select the RS3 button
-         */
-        rs3Button.setSelected(true);
 
          /*
             Add action listeners to rs3Button to set 07 button to unselected
@@ -97,6 +134,7 @@ public class WorldSelector extends JFrame {
         /*
             Add the componants to the buttonPanel
          */
+        buttonPanel.add(accountName);
         buttonPanel.add(spinner);
         buttonPanel.add(rs3Button);
         buttonPanel.add(oldschoolButton);
@@ -104,7 +142,7 @@ public class WorldSelector extends JFrame {
         /*
             Initiate the applyButton
          */
-        applyButton = new JButton("Switch!");
+        applyButton = new JButton("Save!");
         /*
             Add an action listener to the button to close the window
          */
@@ -112,6 +150,11 @@ public class WorldSelector extends JFrame {
             dispose();
             System.out.println(isRS3() ? "RS3 Selected" : "Oldschool Selected");
             System.out.println("Selected world: "+ getWorld());
+            System.out.println("IGN: "+ accountName.getText());
+            loader.setProperty("user", accountName.getText());
+            loader.setProperty("home-world", String.valueOf(getWorld()));
+            loader.setProperty("client-type", isRS3() ? "rs3" : "oldschool");
+            loader.save();
         });
 
 
@@ -161,7 +204,7 @@ public class WorldSelector extends JFrame {
         /*
             Create the WorldSelector object and set it visible
          */
-        final WorldSelector worldSelector = new WorldSelector();
+        final UserdataSelector worldSelector = new UserdataSelector(null);
         worldSelector.setVisible(true);
     }
 }
