@@ -86,11 +86,11 @@ public class RSApplet extends JPanel implements AppletStub {
     }
 
     /**
-     * downloads the gamepack, then creates the applet.
+     * downloads the game pack, then creates the applet.
      */
     public void downloadAndCreate() {
         /*
-            Downloads the gamepack from the website using parameters
+            Downloads the game pack from the website using parameters
          */
         Utilities.downloadFile(parameters.getParameter("codebase") + parameters.getParameter("initial_jar"),
                 Utilities.getContentDirectory() + "game/" + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
