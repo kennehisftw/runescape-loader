@@ -2,9 +2,10 @@ package io.github.kennehisftw;
 
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 import io.github.kennehisftw.swing.GameSelection;
+import io.github.kennehisftw.utils.Constants;
+import io.github.kennehisftw.utils.Utilities;
 
 import javax.swing.*;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 
 /**
@@ -18,38 +19,53 @@ public class Boot {
     /*
         Create the GameSelection Window
      */
-    private final GameSelection selection;
+    private GameSelection selection;
 
     public Boot() {
 
         /*
-            Instantiate the GameSelection window
+            Download the required files
          */
-        selection = new GameSelection();
-
-        /*
-            Set the location of the window on screen
-         */
-        selection.setLocationRelativeTo(null);
+        Utilities.downloadFile(Constants.CLIENT_ICON_URL, Utilities.getContentDirectory() + "images/icon.png");
+        Utilities.downloadFile(Constants.BACKGROUND_URL, Utilities.getContentDirectory() + "images/bg.png");
+        Utilities.downloadFile(Constants.OS_LOGO_URL, Utilities.getContentDirectory() + "images/os.png");
+        Utilities.downloadFile(Constants.RS3_LOGO_URL, Utilities.getContentDirectory() + "images/rs3.png");
+        Utilities.downloadFile(Constants.LOADING_IMAGE_URL, Utilities.getContentDirectory() + "images/loading.gif");
 
         /*
             Set the selection window visible using SwingUtils
          */
         SwingUtilities.invokeLater(() -> {
+            /*
+            Instantiate the GameSelection window
+         */
+            selection = new GameSelection();
+
+        /*
+            Set the location of the window on screen
+         */
+            selection.setLocationRelativeTo(null);
             selection.setVisible(true);
         });
     }
 
     public static void main(String[] args) {
+        /*
+            Set the frame able to be decorated by look and feels
+         */
+        JFrame.setDefaultLookAndFeelDecorated(true);
+
+        /*
+            Sets the weight of the menus to prevent overlapping
+         */
+        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
         /*
             Sets the LaF
          */
         try {
             UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (UnsupportedLookAndFeelException | ParseException e) {
             e.printStackTrace();
         }
 

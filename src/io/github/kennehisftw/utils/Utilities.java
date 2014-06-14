@@ -1,5 +1,6 @@
 package io.github.kennehisftw.utils;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,19 +27,16 @@ public class Utilities {
             connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
 
             final int contentLength = connection.getContentLength();
-            System.out.println("URLConnection content length: " + contentLength);
-
             final File destination = new File(location);
+
             if(destination.exists()) {
-                System.out.println("File already exists, checking size.");
                 final URLConnection savedFileConnection = destination.toURI().toURL().openConnection();
-                System.out.println("Saved content length: " + savedFileConnection.getContentLength());
                 if(savedFileConnection.getContentLength() == contentLength) {
-                    System.out.println("File with the same content length and name exists, skipping download.");
                     return true;
-                } else {
-                    System.out.println("Content size doesn't match, redownloading.");
                 }
+            } else {
+                final File parent = destination.getParentFile();
+                if(!parent.exists()) parent.mkdirs();
             }
 
             final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
@@ -54,6 +52,23 @@ public class Utilities {
 
         System.out.println(url + "->" + location);
         return new File(location).exists();
+    }
+
+    /**
+     * Used to change the loading of all files
+     * @return the directory which files load from
+     */
+    public static String getContentDirectory() {
+        return System.getProperty("user.home") + File.separator + "runescape-loader" + File.separator;
+    }
+
+    /**
+     * Uses Toolkit.getDefaultToolkit() to load an image from the specified file location
+     * @param file the absolute location of the image
+     * @return the image
+     */
+    public static Image getImage(String file) {
+        return Toolkit.getDefaultToolkit().createImage(file);
     }
 
 }

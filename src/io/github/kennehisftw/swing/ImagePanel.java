@@ -12,13 +12,13 @@ public class ImagePanel extends JPanel {
     /*
         The background image to be set on the panel
      */
-    private BufferedImage background;
+    private Image background;
 
     /*
         Instantiates the class and sets the image
      */
     public ImagePanel(Image image) {
-        this.background = (BufferedImage) image;
+        this.background = image;
     }
 
     /**

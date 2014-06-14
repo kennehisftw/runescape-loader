@@ -62,11 +62,7 @@ public class RSApplet extends JPanel implements AppletStub {
         /*
             Load and create the loading image using the Toolkit class
          */
-        try {
-            loadingImage = Toolkit.getDefaultToolkit().createImage(new URL("http://i.imgur.com/z1C9qFC.gif"));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        loadingImage = Utilities.getImage(Utilities.getContentDirectory() + "images/loading.gif");
 
         /*
             Set the background color of the parent JPanel to black
@@ -97,12 +93,12 @@ public class RSApplet extends JPanel implements AppletStub {
             Downloads the gamepack from the website using parameters
          */
         Utilities.downloadFile(parameters.getParameter("codebase") + parameters.getParameter("initial_jar"),
-                System.getProperty("java.io.tmpdir") + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
+                Utilities.getContentDirectory() + "game/" + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
 
         /*
             Create a new file with the location of the gamepack we had just downloaded.
          */
-        final File jar = new File(System.getProperty("java.io.tmpdir") + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
+        final File jar = new File(Utilities.getContentDirectory() + "game/" + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
 
         /*
             Create a new URLClassLoader using the jar

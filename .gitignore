@@ -2,5 +2,6 @@
 .git/*
 .idea/*
 out/*
-src/META-INF
-.gitignore
+META-INF/*
+./*.iml
+./.gitignore

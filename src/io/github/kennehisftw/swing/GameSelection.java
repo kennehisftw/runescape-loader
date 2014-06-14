@@ -1,12 +1,14 @@
 package io.github.kennehisftw.swing;
 
 import io.github.kennehisftw.loader.RSApplet;
+import io.github.kennehisftw.utils.Utilities;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Created by Kenneth on 6/13/2014.
@@ -21,7 +23,7 @@ public class GameSelection extends JFrame {
     /*
         Creates the image objects
      */
-    private Image rs3Image, osImage, backGround;
+    private Image rs3Image, osImage, backGround, icon;
 
     /*
         Creates the ImagePanel object
@@ -50,13 +52,15 @@ public class GameSelection extends JFrame {
         /*
             Initialize the images with ImageIO
          */
-        try {
-            rs3Image = ImageIO.read(GameSelection.class.getResource("rs3.png"));
-            osImage = ImageIO.read(GameSelection.class.getResource("os.png"));
-            backGround = ImageIO.read(GameSelection.class.getResource("bg.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        rs3Image = Utilities.getImage(Utilities.getContentDirectory() + "images/rs3.png");
+        osImage = Utilities.getImage(Utilities.getContentDirectory() + "images/os.png");
+        backGround = Utilities.getImage(Utilities.getContentDirectory() + "images/bg.png");
+        icon = Utilities.getImage(Utilities.getContentDirectory() + "images/icon.png");
+
+        /*
+            Set the frame icon
+         */
+        setIconImage(icon);
 
         /*
                 Instantiate the ImagePanel
