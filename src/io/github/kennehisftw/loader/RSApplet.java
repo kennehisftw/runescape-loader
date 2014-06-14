@@ -37,6 +37,11 @@ public class RSApplet extends JPanel implements AppletStub {
      */
     private Applet applet;
 
+    /*
+        The selected game mode
+     */
+    private boolean oldschool = false;
+
     /**
      * Instantiates the RSApplet class
      * @param worldId the world you wish to load in to
@@ -48,6 +53,12 @@ public class RSApplet extends JPanel implements AppletStub {
             Set panel layout to BorderLayout
          */
         setLayout(new BorderLayout());
+
+        /*
+            Set the game mode
+         */
+        this.oldschool = oldschool;
+
         /*
             Load and create the loading image using the Toolkit class
          */
@@ -76,7 +87,6 @@ public class RSApplet extends JPanel implements AppletStub {
             Instantiate the parameters class. This will also start the parsing.
          */
         parameters = new Parameters(worldId, oldschool);
-
     }
 
     /**
@@ -87,12 +97,12 @@ public class RSApplet extends JPanel implements AppletStub {
             Downloads the gamepack from the website using parameters
          */
         Utilities.downloadFile(parameters.getParameter("codebase") + parameters.getParameter("initial_jar"),
-                System.getProperty("java.io.tmpdir") + "gamepack.jar");
+                System.getProperty("java.io.tmpdir") + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
 
         /*
             Create a new file with the location of the gamepack we had just downloaded.
          */
-        final File jar = new File(System.getProperty("java.io.tmpdir") + "gamepack.jar");
+        final File jar = new File(System.getProperty("java.io.tmpdir") + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
 
         /*
             Create a new URLClassLoader using the jar
@@ -139,24 +149,14 @@ public class RSApplet extends JPanel implements AppletStub {
         remove(imageLabel);
 
         /*
-            Resize the applet
-         */
-        applet.setPreferredSize(new Dimension(765, 503));
-
-        /*
             Add the applet to the panel
          */
         add(applet, BorderLayout.CENTER);
 
         /*
-            Set the color back to white
-         */
-        setBackground(Color.CYAN);
-
-        /*
             Refresh the panel
          */
-        SwingUtilities.updateComponentTreeUI(this);
+        revalidate();
     }
 
     @Override
@@ -198,6 +198,5 @@ public class RSApplet extends JPanel implements AppletStub {
 
     @Override
     public void appletResize(int width, int height) {
-
     }
 }
