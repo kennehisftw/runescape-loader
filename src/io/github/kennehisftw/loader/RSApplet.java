@@ -11,6 +11,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 
 /**
  * Created by Kenneth on 6/12/2014.
@@ -89,6 +90,7 @@ public class RSApplet extends JPanel implements AppletStub {
      * downloads the game pack, then creates the applet.
      */
     public void downloadAndCreate() {
+
         /*
             Downloads the game pack from the website using parameters
          */
@@ -153,6 +155,14 @@ public class RSApplet extends JPanel implements AppletStub {
             Refresh the panel
          */
         revalidate();
+    }
+
+    /**
+     * Gets the applet instance
+     * @return applet
+     */
+    public Applet getApplet() {
+        return applet;
     }
 
     @Override

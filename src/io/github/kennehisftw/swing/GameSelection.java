@@ -1,14 +1,18 @@
 package io.github.kennehisftw.swing;
 
+import io.github.kennehisftw.GELookupForm;
 import io.github.kennehisftw.loader.RSApplet;
 import io.github.kennehisftw.utils.Utilities;
+import io.github.kennehisftw.utils.screenshot.Imgur;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Created by Kenneth on 6/13/2014.
@@ -36,6 +40,27 @@ public class GameSelection extends JFrame {
     private RSApplet applet;
 
     /*
+        The TrayIcon object
+     */
+    private TrayIcon trayIcon;
+
+    /**
+     * The hide menu option
+     */
+    private MenuItem hide;
+
+    /*
+        Creates the ImgurUploader object
+     */
+    private Imgur imgur;
+
+    /*
+        Creates a new GELookup class
+     */
+    private GELookupForm geLookupForm;
+
+
+    /*
         Instantiates the class
      */
     public GameSelection() {
@@ -56,6 +81,29 @@ public class GameSelection extends JFrame {
         osImage = Utilities.getImage(Utilities.getContentDirectory() + "images/os.png");
         backGround = Utilities.getImage(Utilities.getContentDirectory() + "images/bg.png");
         icon = Utilities.getImage(Utilities.getContentDirectory() + "images/icon.png");
+
+
+        /*
+            Initializes the GELookup
+         */
+        geLookupForm = new GELookupForm();
+
+        /*
+            Initialize the tray icon
+         */
+        trayIcon = new TrayIcon(icon);
+        trayIcon.setImageAutoSize(true);
+        trayIcon.setPopupMenu(createMenu());
+        trayIcon.setToolTip("RuneScape Loader");
+
+        /*
+            Add the icon to the system tray
+         */
+        try {
+            SystemTray.getSystemTray().add(trayIcon);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
 
         /*
             Set the frame icon
@@ -192,9 +240,94 @@ public class GameSelection extends JFrame {
         getContentPane().add(oldschool, c);
 
         /*
+            Instantiate the ImgurUploader
+         */
+        imgur = new Imgur();
+
+        /*
+            Sets the frame focusable for the keylistener to register
+         */
+        setFocusable(true);
+        /*
+            Adds a key adapter for screen shot functionality
+         */
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println(e.getKeyCode());
+                if(e.getKeyCode() == 122) {
+                    screenshot();
+                }
+            }
+        });
+
+        /*
             Sets the frame size
          */
         setSize(1024, 600);
+    }
 
+    /**
+     * Hide/show the frame
+     */
+    public void hideWindow() {
+        setVisible(!isVisible());
+        hide.setLabel(isVisible() ? "Hide" : "Show");
+    }
+
+    /**
+     * Setup the menu for the tray icon
+     *
+     * @return The newly created menu
+     */
+    public PopupMenu createMenu() {
+        PopupMenu menu = new PopupMenu();
+        hide = new MenuItem("Hide");
+        hide.addActionListener(listener ->  hideWindow());
+        menu.add(hide);
+
+        MenuItem geLookup = new MenuItem("GE Lookup");
+        geLookup.addActionListener(listener -> {
+            geLookupForm.setVisible(!geLookupForm.isVisible());
+        });
+        menu.add(geLookup);
+
+        MenuItem screenshot = new MenuItem("ScreenShot");
+        screenshot.addActionListener(listener -> screenshot());
+        menu.add(screenshot);
+        MenuItem item = new MenuItem("Exit");
+        item.addActionListener(listener -> System.exit(0));
+        menu.add(item);
+        return menu;
+    }
+
+    public void screenshot() {
+        System.out.println("Uploading screenshot");
+
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage image = robot.createScreenCapture(getBounds());
+
+        Utilities.writeImage(image);
+        Thread thread = new Thread(() -> {
+            String imageURL = null;
+            try {
+                imageURL = imgur.upload(image);
+            } catch(IOException ex) {
+                System.out.println("Error uploading screen shot.");
+            }
+            StringSelection stringSelection = new StringSelection(imageURL);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            trayIcon.displayMessage(
+                    "Screen Shot Taken!",
+                    "Uploaded Screen Shot to " + imageURL, TrayIcon.MessageType.INFO);
+        });
+        thread.start();
     }
 }

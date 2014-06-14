@@ -7,3 +7,6 @@ It simply allows you to choose what game mode you want to play when it launches.
 ## How to get the loader
 
 You can always download the newest version of this from [here](https://github.com/kennehisftw/runescape-loader/raw/master/runescape-loader.jar)
+
+Credits:
+Sven Olderaan (Crystal Mare) for assisting me with the Imgur api.

@@ -14,4 +14,11 @@ public class Constants {
     public static final String RS3_LOGO_URL = "http://i.imgur.com/OfhmqrO.png";
     public static final String LOADING_IMAGE_URL = "http://i.imgur.com/z1C9qFC.gif";
 
+
+    /*
+        imgur data
+     */
+    public static final String CLIENT_ID = "eed4a4b4ee16a33";
+    public static final String IMGUR_POST_URI = "https://api.imgur.com/3/image";
+
 }

@@ -1,13 +1,20 @@
 package io.github.kennehisftw.utils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 /**
  * Created by Kenneth on 6/12/2014.
@@ -69,6 +76,27 @@ public class Utilities {
      */
     public static Image getImage(String file) {
         return Toolkit.getDefaultToolkit().createImage(file);
+    }
+
+    public static void writeImage(Image image) {
+
+        File parent = new File(getContentDirectory() + "screenshots/");
+        if(!parent.exists()) parent.mkdirs();
+        File location = new File(parent.toString() + File.separator +  System.currentTimeMillis() + ".png");
+
+        try {
+            location.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ImageIO.write((RenderedImage) image, "png", location);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("File written: "+ location);
     }
 
 }
