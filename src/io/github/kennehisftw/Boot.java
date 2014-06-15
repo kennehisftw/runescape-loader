@@ -35,7 +35,9 @@ public class Boot {
             Utilities.downloadFile("https://dl.dropboxusercontent.com/u/9359719/images.zip", Utilities.getContentDirectory() + "/images/images.zip");
             try {
                 final ZipFile zipFile = new ZipFile(Utilities.getContentDirectory() + "/images/images.zip");
+                zipFile.setRunInThread(false);
                 zipFile.extractAll(Utilities.getContentDirectory());
+
             } catch (ZipException e) {
                 e.printStackTrace();
             }
