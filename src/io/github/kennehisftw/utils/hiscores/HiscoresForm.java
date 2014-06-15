@@ -7,6 +7,8 @@ import io.github.kennehisftw.utils.Utilities;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
@@ -24,6 +26,27 @@ public class HiscoresForm extends JFrame {
         getContentPane().setLayout(new VerticalFlowLayout());
         initComponents();
         //setVisible(true);
+    }
+
+    private void btnActionEvent() {
+        panel1.removeAll();
+        lookup = new HiscoresLookup(textField1.getText(), !checkBox1.isSelected());
+        label1.setText(textField1.getText());
+        setTitle("Player Stats Lookup - " + textField1.getText());
+        panel1.setLayout(new VerticalFlowLayout());
+        for(Skill skill : lookup.getSkillMap().values()) {
+            panel1.add(createSkillPanel(skill));
+        }
+        this.label2.setIcon(new ImageIcon(Utilities.downloadImage("http://services.runescape.com/m=avatar-rs/" + textField1.getText() + "/chat.png")));
+        this.label2.repaint();
+        this.label2.revalidate();
+
+        this.label3.setIcon(new ImageIcon(Utilities.downloadImage("http://services.runescape.com/m=avatar-rs/" + textField1.getText() + "/ownclan.png")));
+        this.label3.repaint();
+        this.label3.revalidate();
+
+        panel1.repaint();
+        panel1.revalidate();
     }
 
     private JPanel createSkillPanel(Skill skill) {
@@ -74,30 +97,19 @@ public class HiscoresForm extends JFrame {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - asdf asdf
         textField1 = new JTextField();
+        textField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                   btnActionEvent();
+                }
+            }
+        });
         checkBox1 = new JCheckBox();
         label1 = new JLabel();
         label2 = new JLabel();
         button1 = new JButton();
-        button1.addActionListener(listener -> {
-            panel1.removeAll();
-            lookup = new HiscoresLookup(textField1.getText(), !checkBox1.isSelected());
-            label1.setText(textField1.getText());
-            setTitle("Player Stats Lookup - " + textField1.getText());
-            panel1.setLayout(new VerticalFlowLayout());
-            for(Skill skill : lookup.getSkillMap().values()) {
-                panel1.add(createSkillPanel(skill));
-            }
-            this.label2.setIcon(new ImageIcon(Utilities.downloadImage("http://services.runescape.com/m=avatar-rs/" + textField1.getText() + "/chat.png")));
-            this.label2.repaint();
-            this.label2.revalidate();
-
-            this.label3.setIcon(new ImageIcon(Utilities.downloadImage("http://services.runescape.com/m=avatar-rs/" + textField1.getText() + "/ownclan.png")));
-            this.label3.repaint();
-            this.label3.revalidate();
-
-            panel1.repaint();
-            panel1.revalidate();
-        });
+        button1.addActionListener(listener -> btnActionEvent());
         panel1 = new JPanel();
         label3 = new JLabel();
 
@@ -201,18 +213,5 @@ public class HiscoresForm extends JFrame {
     private JPanel panel1;
     private JLabel label3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
-
-    public static void main(String[] args) {
-
-        try {
-            UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        new HiscoresForm();
-    }
 
 }

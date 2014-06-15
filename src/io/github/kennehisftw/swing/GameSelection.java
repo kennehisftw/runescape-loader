@@ -2,6 +2,7 @@ package io.github.kennehisftw.swing;
 
 import io.github.kennehisftw.loader.RSApplet;
 import io.github.kennehisftw.utils.Utilities;
+import io.github.kennehisftw.utils.adventurerslog.AdventurersLogFrame;
 import io.github.kennehisftw.utils.grandexchange.GELookupForm;
 import io.github.kennehisftw.utils.hiscores.HiscoresForm;
 import io.github.kennehisftw.utils.screenshot.Imgur;
@@ -60,6 +61,10 @@ public class GameSelection extends JFrame {
      */
     private HiscoresForm hiscoresForm;
 
+    /*
+        Creates a new AdventurersLog form
+     */
+    private AdventurersLogFrame aLogForm;
 
     /*
         Instantiates the class
@@ -92,6 +97,9 @@ public class GameSelection extends JFrame {
 
         Thread thread3 = new Thread(() -> hiscoresForm = new HiscoresForm());
         thread3.start();
+
+        Thread thread4 = new Thread(() -> aLogForm = new AdventurersLogFrame());
+        thread4.start();
 
         /*
             Initialize the tray icon
@@ -262,6 +270,10 @@ public class GameSelection extends JFrame {
      */
     public PopupMenu createMenu() {
         PopupMenu menu = new PopupMenu();
+        MenuItem aLog = new MenuItem("Adventurer's Log");
+        aLog.addActionListener(listener -> aLogForm.setVisible(!aLogForm.isVisible()));
+        menu.add(aLog);
+
         MenuItem geLookup = new MenuItem("GE Lookup");
         geLookup.addActionListener(listener -> geLookupForm.setVisible(!geLookupForm.isVisible()));
         menu.add(geLookup);
