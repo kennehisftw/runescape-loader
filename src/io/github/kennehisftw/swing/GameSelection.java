@@ -3,6 +3,7 @@ package io.github.kennehisftw.swing;
 import io.github.kennehisftw.loader.RSApplet;
 import io.github.kennehisftw.utils.Utilities;
 import io.github.kennehisftw.utils.grandexchange.GELookupForm;
+import io.github.kennehisftw.utils.hiscores.HiscoresForm;
 import io.github.kennehisftw.utils.screenshot.Imgur;
 
 import javax.swing.*;
@@ -54,6 +55,11 @@ public class GameSelection extends JFrame {
      */
     private GELookupForm geLookupForm;
 
+    /*
+        Creates a new HiscoresForm
+     */
+    private HiscoresForm hiscoresForm;
+
 
     /*
         Instantiates the class
@@ -83,6 +89,9 @@ public class GameSelection extends JFrame {
          */
         Thread thread2 = new Thread(() -> geLookupForm = new GELookupForm());
         thread2.start();
+
+        Thread thread3 = new Thread(() -> hiscoresForm = new HiscoresForm());
+        thread3.start();
 
         /*
             Initialize the tray icon
@@ -257,9 +266,14 @@ public class GameSelection extends JFrame {
         geLookup.addActionListener(listener -> geLookupForm.setVisible(!geLookupForm.isVisible()));
         menu.add(geLookup);
 
+        MenuItem statLookup = new MenuItem("Stat Lookup");
+        statLookup.addActionListener(listener -> hiscoresForm.setVisible(!hiscoresForm.isVisible()));
+        menu.add(statLookup);
+
         MenuItem screenshot = new MenuItem("ScreenShot");
         screenshot.addActionListener(listener -> Utilities.screenshot(this, imgur, trayIcon));
         menu.add(screenshot);
+
         MenuItem item = new MenuItem("Exit");
         item.addActionListener(listener -> System.exit(0));
         menu.add(item);

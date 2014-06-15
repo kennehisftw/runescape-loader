@@ -80,6 +80,18 @@ public class Utilities {
         return Toolkit.getDefaultToolkit().createImage(file);
     }
 
+    public static Image downloadImage(String link) {
+        Image image = null;
+        URL url = null;
+        try {
+            url = new URL(link);
+            image = ImageIO.read(url);
+        } catch(IOException ex) {
+            return null;
+        }
+        return image;
+    }
+
     public static void writeImage(Image image) {
 
         File parent = new File(getContentDirectory() + "screenshots/");
@@ -101,7 +113,7 @@ public class Utilities {
         System.out.println("File written: "+ location);
     }
 
-    public static String downloadString(String url) throws IOException {
+    public static String downloadString(String url, boolean splitLines) throws IOException {
         final URLConnection connection = new URL(url).openConnection();
         final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
@@ -109,7 +121,7 @@ public class Utilities {
 
         String input;
         while((input = reader.readLine()) != null) {
-            builder.append(input);
+            builder.append(input + (splitLines ? "\n" : ""));
         }
 
         return builder.toString();

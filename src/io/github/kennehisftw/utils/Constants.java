@@ -26,4 +26,10 @@ public class Constants {
      */
     public static final String RS_API_URL = "http://us.api.rsapi.net/ge/item/";
 
+    /*
+        RS Hiscores URL
+     */
+    public static final String RS_HISCORES_URL = "http://services.runescape.com/m=hiscore/index_lite.ws?player=";
+    public static final String OLDSCHOOL_HISCORES_URL = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
+
 }

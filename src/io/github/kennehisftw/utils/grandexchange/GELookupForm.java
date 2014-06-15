@@ -43,6 +43,9 @@ public class GELookupForm extends JFrame {
 
     public GELookupForm() {
 
+        Utilities.downloadFile("http://pastebin.com/raw.php?i=5M8NW38G",
+                Utilities.getContentDirectory() + "data/items.txt");
+
         System.out.println("Loading map..");
         BufferedReader reader = null;
         File file = null;

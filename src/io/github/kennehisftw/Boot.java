@@ -1,15 +1,17 @@
 package io.github.kennehisftw;
 
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 import io.github.kennehisftw.swing.GameSelection;
 import io.github.kennehisftw.utils.Constants;
 import io.github.kennehisftw.utils.Utilities;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.io.File;
 import java.text.ParseException;
 
 /**
@@ -27,18 +29,20 @@ public class Boot {
 
     public Boot() {
 
-        /*
-            Download the required files
-         */
-        Utilities.downloadFile(Constants.CLIENT_ICON_URL, Utilities.getContentDirectory() + "images/icon.png");
-        Utilities.downloadFile(Constants.BACKGROUND_URL, Utilities.getContentDirectory() + "images/bg.png");
-        Utilities.downloadFile(Constants.OS_LOGO_URL, Utilities.getContentDirectory() + "images/os.png");
-        Utilities.downloadFile(Constants.RS3_LOGO_URL, Utilities.getContentDirectory() + "images/rs3.png");
-        Utilities.downloadFile(Constants.LOADING_IMAGE_URL, Utilities.getContentDirectory() + "images/loading.gif");
+        final File backgroundImage = new File(Utilities.getContentDirectory() + "images/bg.png");
+        if(!backgroundImage.exists()) {
+            System.out.println("Downloading images..");
+            Utilities.downloadFile("https://dl.dropboxusercontent.com/u/9359719/images.zip", Utilities.getContentDirectory() + "/images/images.zip");
+            try {
+                final ZipFile zipFile = new ZipFile(Utilities.getContentDirectory() + "/images/images.zip");
+                zipFile.extractAll(Utilities.getContentDirectory());
+            } catch (ZipException e) {
+                e.printStackTrace();
+            }
+        }
 
-        Thread thread = new Thread(() -> Utilities.downloadFile("http://pastebin.com/raw.php?i=5M8NW38G",
-                Utilities.getContentDirectory() + "data/items.txt"));
-        thread.start();
+
+
 
         /*
             Set the selection window visible using SwingUtils
@@ -57,7 +61,6 @@ public class Boot {
                 if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F12) {
                     Utilities.screenshot(selection, selection.getImgur(), selection.getTrayIcon());
                 }
-                System.out.println(e.getKeyCode());
                 return false;
             });
         /*

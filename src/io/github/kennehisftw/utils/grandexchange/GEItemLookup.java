@@ -6,8 +6,6 @@ import io.github.kennehisftw.utils.Utilities;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Kenneth on 6/14/2014.
@@ -25,7 +23,7 @@ public class GEItemLookup {
 
         String json = "";
         try {
-            json = Utilities.downloadString(request.toString());
+            json = Utilities.downloadString(request.toString(), false);
         } catch(IOException a) {
             a.printStackTrace();
         }
@@ -38,11 +36,11 @@ public class GEItemLookup {
 
     public static void main(String[] args) throws IOException {
 
-        final FileWriter writer = new FileWriter("./db.txt");
+        final FileWriter writer = new FileWriter("./items.txt");
         int index = 0;
 
         for(int i = 0; i <= 40; i++) {
-            GEItemLookup lookup = new GEItemLookup(createAscendingArray(index));
+            GEItemLookup lookup = new GEItemLookup(createAscendingArray(index, 1000));
             for (Item item : lookup.getItems()) {
                 writer.write(item.getId() + ":" + item.getName() + "\n");
             }
@@ -62,8 +60,8 @@ public class GEItemLookup {
         }
     }
 
-    public static int[] createAscendingArray(int start) {
-        final int[] arr = new int[1001];
+    public static int[] createAscendingArray(int start, int increment) {
+        final int[] arr = new int[increment+1];
         for(int i = 0; i < arr.length; i++) {
             arr[i] = start + i;
         }
