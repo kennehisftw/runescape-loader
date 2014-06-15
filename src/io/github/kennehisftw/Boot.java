@@ -75,6 +75,7 @@ public class Boot {
     }
 
     public static void main(String[] args) {
+
         /*
             Set the frame able to be decorated by look and feels
          */
