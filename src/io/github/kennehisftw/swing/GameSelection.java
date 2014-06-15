@@ -1,8 +1,8 @@
 package io.github.kennehisftw.swing;
 
-import io.github.kennehisftw.GELookupForm;
 import io.github.kennehisftw.loader.RSApplet;
 import io.github.kennehisftw.utils.Utilities;
+import io.github.kennehisftw.utils.grandexchange.GELookupForm;
 import io.github.kennehisftw.utils.screenshot.Imgur;
 
 import javax.swing.*;
@@ -44,11 +44,6 @@ public class GameSelection extends JFrame {
      */
     private TrayIcon trayIcon;
 
-    /**
-     * The hide menu option
-     */
-    private MenuItem hide;
-
     /*
         Creates the ImgurUploader object
      */
@@ -84,9 +79,10 @@ public class GameSelection extends JFrame {
 
 
         /*
-            Initializes the GELookup
+            Initializes the GELookup on a new thread to pre-load the data.
          */
-        geLookupForm = new GELookupForm();
+        Thread thread2 = new Thread(() -> geLookupForm = new GELookupForm());
+        thread2.start();
 
         /*
             Initialize the tray icon
@@ -166,7 +162,7 @@ public class GameSelection extends JFrame {
             /*
                 Start the applet from a new thread
              */
-            Thread thread = new Thread(() -> applet.downloadAndCreate());
+            Thread thread = new Thread(applet::downloadAndCreate);
             thread.start();
         });
 
@@ -214,7 +210,7 @@ public class GameSelection extends JFrame {
             /*
                 Start the applet from a new thread
              */
-            Thread thread = new Thread(() -> applet.downloadAndCreate());
+            Thread thread = new Thread(applet::downloadAndCreate);
             thread.start();
         });
 
@@ -245,34 +241,9 @@ public class GameSelection extends JFrame {
         imgur = new Imgur();
 
         /*
-            Sets the frame focusable for the keylistener to register
-         */
-        setFocusable(true);
-        /*
-            Adds a key adapter for screen shot functionality
-         */
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                System.out.println(e.getKeyCode());
-                if(e.getKeyCode() == 122) {
-                    screenshot();
-                }
-            }
-        });
-
-        /*
             Sets the frame size
          */
         setSize(1024, 600);
-    }
-
-    /**
-     * Hide/show the frame
-     */
-    public void hideWindow() {
-        setVisible(!isVisible());
-        hide.setLabel(isVisible() ? "Hide" : "Show");
     }
 
     /**
@@ -282,18 +253,12 @@ public class GameSelection extends JFrame {
      */
     public PopupMenu createMenu() {
         PopupMenu menu = new PopupMenu();
-        hide = new MenuItem("Hide");
-        hide.addActionListener(listener ->  hideWindow());
-        menu.add(hide);
-
         MenuItem geLookup = new MenuItem("GE Lookup");
-        geLookup.addActionListener(listener -> {
-            geLookupForm.setVisible(!geLookupForm.isVisible());
-        });
+        geLookup.addActionListener(listener -> geLookupForm.setVisible(!geLookupForm.isVisible()));
         menu.add(geLookup);
 
         MenuItem screenshot = new MenuItem("ScreenShot");
-        screenshot.addActionListener(listener -> screenshot());
+        screenshot.addActionListener(listener -> Utilities.screenshot(this, imgur, trayIcon));
         menu.add(screenshot);
         MenuItem item = new MenuItem("Exit");
         item.addActionListener(listener -> System.exit(0));
@@ -301,33 +266,11 @@ public class GameSelection extends JFrame {
         return menu;
     }
 
-    public void screenshot() {
-        System.out.println("Uploading screenshot");
+    public Imgur getImgur() {
+        return imgur;
+    }
 
-        Robot robot = null;
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-
-        BufferedImage image = robot.createScreenCapture(getBounds());
-
-        Utilities.writeImage(image);
-        Thread thread = new Thread(() -> {
-            String imageURL = null;
-            try {
-                imageURL = imgur.upload(image);
-            } catch(IOException ex) {
-                System.out.println("Error uploading screen shot.");
-            }
-            StringSelection stringSelection = new StringSelection(imageURL);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(stringSelection, null);
-            trayIcon.displayMessage(
-                    "Screen Shot Taken!",
-                    "Uploaded Screen Shot to " + imageURL, TrayIcon.MessageType.INFO);
-        });
-        thread.start();
+    public TrayIcon getTrayIcon() {
+        return trayIcon;
     }
 }

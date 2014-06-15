@@ -1,15 +1,28 @@
-package io.github.kennehisftw;
+package io.github.kennehisftw.utils.grandexchange;
 
 /**
  * Created by Kenneth on 6/14/2014.
  */
 
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
+import io.github.kennehisftw.utils.Utilities;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.ParseException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GELookupForm extends JFrame {
 
@@ -26,17 +39,91 @@ public class GELookupForm extends JFrame {
         SwingUtilities.invokeLater(() -> geLookupForm.setVisible(true));
     }
 
+    private Map<String, Integer> map = new LinkedHashMap<>();
+
     public GELookupForm() {
+
+        System.out.println("Loading map..");
+        BufferedReader reader = null;
+        File file = null;
+        try {
+            file = new File(Utilities.getContentDirectory() + "data/items.txt");
+            reader = new BufferedReader(new InputStreamReader(file.toURI().toURL().openStream()));
+            String input;
+            while((input = reader.readLine()) != null) {
+                String[] data = input.split(":");
+                map.putIfAbsent(data[1], Integer.parseInt(data[0]));
+            }
+        } catch(IOException a) {
+            System.out.println("Error loading map data");
+        }
         initComponents();
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - asdf asdf
+        setTitle("Grand Exchange Lookup");
+
+        model = new DefaultListModel<>();
+
         textField1 = new JTextField();
-        button1 = new JButton();
+        textField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                model.removeAllElements();
+                if(!textField1.getText().isEmpty() && textField1.getText().length() >= 2) {
+                    for (String str : map.keySet()) {
+                        if (str.toLowerCase().contains(textField1.getText().toLowerCase())) {
+                            model.addElement(str);
+                        }
+                    }
+                }
+            }
+        });
         scrollPane1 = new JScrollPane();
-        list1 = new JList();
+        list1 = new JList(model);
+        list1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                String selectedItem = (String) list1.getSelectedValue();
+                final GEItemLookup lookup = new GEItemLookup(map.get(selectedItem));
+                final Item item = lookup.getItems()[0];
+
+                System.out.println(item.getLargeIcon().replace("4478_", "4485_"));
+
+                Image icon = null;
+                try {
+                    icon = ImageIO.read(new URL(item.getLargeIcon().replace("4478_", "4485_")));
+                } catch(IOException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println(icon.getWidth(null) + ":"+ icon.getHeight(null));
+                label1.setIcon(new ImageIcon(icon));
+                label1.repaint();
+                label1.revalidate();
+
+                label7.setText(item.getName());
+
+                String description = item.getDescription();
+                /*System.out.println("description length: "+ description.length());
+                if(description.length() >= 10) {
+                    String[] parts = description.split(" ");
+                    int center = description.indexOf(parts[(parts.length / 2) + 1]);
+                    System.out.println(center);
+                    String temp = description;
+                    description = "<html>"+ temp.substring(0, center) + "<br>" + temp.substring(center) + "</html>";
+                }*/
+
+                System.out.println(description);
+
+                label8.setText("<html>"+description + "</html>");
+                label2.setText("Current price: "+ item.getPrices().getCurrent().getPrice());
+                label3.setText("Today's change: "+ item.getPrices().getToday().getPrice());
+                label4.setText("30 Day Change:" + item.getPrices().getDay30().getChange());
+                label5.setText("90 Day Change: "+ item.getPrices().getDay90().getChange());
+                label6.setText("180 Day Change: "+ item.getPrices().getDay180().getChange());
+
+                SwingUtilities.updateComponentTreeUI(GELookupForm.this);
+            }
+        });
         panel1 = new JPanel();
         label1 = new JLabel();
         panel2 = new JPanel();
@@ -52,9 +139,6 @@ public class GELookupForm extends JFrame {
         //======== this ========
         Container contentPane = getContentPane();
 
-        //---- button1 ----
-        button1.setText("Search");
-
         //======== scrollPane1 ========
         {
             scrollPane1.setViewportView(list1);
@@ -66,7 +150,7 @@ public class GELookupForm extends JFrame {
 
             //---- label1 ----
             label1.setHorizontalAlignment(SwingConstants.CENTER);
-            label1.setIcon(new ImageIcon("C:\\Users\\Kenneth\\Desktop\\New folder\\resources\\largepile.png"));
+            //label1.setIcon(new ImageIcon("C:\\Users\\Kenneth\\Desktop\\New folder\\resources\\largepile.png"));
 
             //======== panel2 ========
             {
@@ -105,10 +189,10 @@ public class GELookupForm extends JFrame {
                                                 .addComponent(label2)
                                                 .addComponent(label4)
                                                 .addComponent(label3))
-                                        .addContainerGap(185, Short.MAX_VALUE))
+                                        .addContainerGap(175, Short.MAX_VALUE))
                                 .addGroup(panel2Layout.createSequentialGroup()
                                         .addComponent(label6)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                                         .addComponent(button2))
                 );
                 panel2Layout.setVerticalGroup(
@@ -121,7 +205,7 @@ public class GELookupForm extends JFrame {
                                         .addComponent(label4)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(label5)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(label6))
                                 .addGroup(panel2Layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
@@ -130,11 +214,11 @@ public class GELookupForm extends JFrame {
             }
 
             //---- label7 ----
-            label7.setText("Off-hand pile of coins");
-            label7.setFont(label7.getFont().deriveFont(label7.getFont().getSize() + 2f));
+            //label7.setText("Off-hand pile of coins");
+            label7.setFont(label7.getFont().deriveFont(label7.getFont().getSize() + 1f));
 
             //---- label8 ----
-            label8.setText("A powerful pile of coins");
+            //label8.setText("A powerful pile of coins");
 
             GroupLayout panel1Layout = new GroupLayout(panel1);
             panel1.setLayout(panel1Layout);
@@ -171,12 +255,9 @@ public class GELookupForm extends JFrame {
                 contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(contentPaneLayout.createParallelGroup()
-                                        .addGroup(contentPaneLayout.createSequentialGroup()
-                                                .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(button1, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))
+                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                                        .addComponent(textField1, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(panel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
@@ -186,21 +267,19 @@ public class GELookupForm extends JFrame {
                         .addGroup(contentPaneLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(contentPaneLayout.createParallelGroup()
-                                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(button1)
-                                                        .addComponent(textField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addComponent(textField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
+                                                .addComponent(scrollPane1))
                                         .addComponent(panel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         pack();
         setLocationRelativeTo(getOwner());
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
     private JTextField textField1;
-    private JButton button1;
     private JScrollPane scrollPane1;
     private JList list1;
     private JPanel panel1;
@@ -214,5 +293,6 @@ public class GELookupForm extends JFrame {
     private JButton button2;
     private JLabel label7;
     private JLabel label8;
+    private DefaultListModel<String> model;
 }
 

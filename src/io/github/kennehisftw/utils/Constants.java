@@ -21,4 +21,9 @@ public class Constants {
     public static final String CLIENT_ID = "eed4a4b4ee16a33";
     public static final String IMGUR_POST_URI = "https://api.imgur.com/3/image";
 
+    /*
+        RSAPI base URL
+     */
+    public static final String RS_API_URL = "http://us.api.rsapi.net/ge/item/";
+
 }

@@ -6,6 +6,10 @@ import io.github.kennehisftw.utils.Constants;
 import io.github.kennehisftw.utils.Utilities;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.ParseException;
 
 /**
@@ -32,6 +36,10 @@ public class Boot {
         Utilities.downloadFile(Constants.RS3_LOGO_URL, Utilities.getContentDirectory() + "images/rs3.png");
         Utilities.downloadFile(Constants.LOADING_IMAGE_URL, Utilities.getContentDirectory() + "images/loading.gif");
 
+        Thread thread = new Thread(() -> Utilities.downloadFile("http://pastebin.com/raw.php?i=5M8NW38G",
+                Utilities.getContentDirectory() + "data/items.txt"));
+        thread.start();
+
         /*
             Set the selection window visible using SwingUtils
          */
@@ -41,6 +49,17 @@ public class Boot {
          */
             selection = new GameSelection();
 
+            /*
+                Setup the listener.
+             */
+            selection.setFocusable(true);
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+                if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F12) {
+                    Utilities.screenshot(selection, selection.getImgur(), selection.getTrayIcon());
+                }
+                System.out.println(e.getKeyCode());
+                return false;
+            });
         /*
             Set the location of the window on screen
          */

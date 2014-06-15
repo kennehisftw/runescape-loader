@@ -1,12 +1,14 @@
 package io.github.kennehisftw.utils;
 
+import io.github.kennehisftw.utils.screenshot.Imgur;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
@@ -99,4 +101,47 @@ public class Utilities {
         System.out.println("File written: "+ location);
     }
 
+    public static String downloadString(String url) throws IOException {
+        final URLConnection connection = new URL(url).openConnection();
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        final StringBuilder builder = new StringBuilder();
+
+        String input;
+        while((input = reader.readLine()) != null) {
+            builder.append(input);
+        }
+
+        return builder.toString();
+    }
+
+    public static void screenshot(Window parent, Imgur imgur, TrayIcon trayIcon) {
+        System.out.println("Uploading screenshot");
+
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage image = robot.createScreenCapture(parent.getBounds());
+
+        Utilities.writeImage(image);
+        Thread thread = new Thread(() -> {
+            String imageURL = null;
+            try {
+                imageURL = imgur.upload(image);
+            } catch(IOException ex) {
+                System.out.println("Error uploading screen shot.");
+            }
+            StringSelection stringSelection = new StringSelection(imageURL);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+            trayIcon.displayMessage(
+                    "Screen Shot Taken!",
+                    "Uploaded Screen Shot to " + imageURL, TrayIcon.MessageType.INFO);
+        });
+        thread.start();
+    }
 }
