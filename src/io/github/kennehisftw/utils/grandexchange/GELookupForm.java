@@ -109,23 +109,23 @@ public class GELookupForm extends JFrame {
                 String description = item.getDescription();
 
                 label8.setText("<html>"+ description + "</html>");
-                label2.setText("<html> Current price: "
+                label2.setText("<html> Current price: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
                         + (item.getPrices().getCurrent().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
                         + item.getPrices().getCurrent().getPrice() + "</html>"
                 );
-                label6.setText("<html> Today's change: "+
+                label6.setText("<html> Today's change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
                                 (item.getPrices().getToday().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getToday().getPrice() + "</html>"
                 );
-                label5.setText("<html> 30 Day Change:" +
+                label5.setText("<html> 30 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                                 (item.getPrices().getDay30().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getDay30().getChange() + "</html>"
                 );
-                label4.setText("<html> 90 Day Change: "+
+                label4.setText("<html> 90 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
                                 (item.getPrices().getDay90().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getDay90().getChange() + "</html>"
                 );
-                label3.setText("<html> 180 Day Change: "+
+                label3.setText("<html> 180 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
                                 (item.getPrices().getDay180().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getDay180().getChange() + "</html>"
                 );
