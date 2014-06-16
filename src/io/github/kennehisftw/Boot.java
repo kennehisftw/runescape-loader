@@ -1,9 +1,7 @@
 package io.github.kennehisftw;
 
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 import io.github.kennehisftw.swing.GameSelection;
-import io.github.kennehisftw.utils.Constants;
 import io.github.kennehisftw.utils.Utilities;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -30,7 +28,7 @@ public class Boot {
     public Boot() {
 
         final File backgroundImage = new File(Utilities.getContentDirectory() + "images/bg.png");
-        if(!backgroundImage.exists()) {
+        if (!backgroundImage.exists()) {
             System.out.println("Downloading images..");
             Utilities.downloadFile("https://dl.dropboxusercontent.com/u/9359719/images.zip", Utilities.getContentDirectory() + "/images/images.zip");
             try {
@@ -40,6 +38,10 @@ public class Boot {
 
             } catch (ZipException e) {
                 e.printStackTrace();
+                String[] options = new String[]{"OK"};
+                JOptionPane.showOptionDialog(null,
+                        "Please go to " + Utilities.getContentDirectory() + " and delete the images folder, then restart the client.", "Error unzipping images",
+                        JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
             }
         }
 
@@ -60,7 +62,7 @@ public class Boot {
              */
             selection.setFocusable(true);
             KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-                if(e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F12) {
+                if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_F12) {
                     Utilities.screenshot(selection, selection.getImgur(), selection.getTrayIcon());
                 }
                 return false;
@@ -71,7 +73,6 @@ public class Boot {
             selection.setLocationRelativeTo(null);
             selection.setVisible(true);
         });
-
 
 
     }

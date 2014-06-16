@@ -18,6 +18,7 @@ public class Imgur {
 
     /**
      * Converts a BufferedImage into a Base64 string
+     *
      * @param image the image you wish to convert
      * @return the converted string
      * @throws UnsupportedEncodingException
@@ -27,7 +28,7 @@ public class Imgur {
         try {
             output = new ByteArrayOutputStream();
             ImageIO.write(image, "PNG", output);
-        } catch(IOException a) {
+        } catch (IOException a) {
             a.printStackTrace();
         }
         return URLEncoder.encode(Base64.encodeBase64String(output.toByteArray()), "UTF-8");
@@ -35,6 +36,7 @@ public class Imgur {
 
     /**
      * Uploads the image to imgur using their api
+     *
      * @param image the image you want to upload
      * @return the URL of the uploaded image
      * @throws IOException
@@ -61,7 +63,7 @@ public class Imgur {
         StringBuilder builder = new StringBuilder();
 
         String input;
-        while((input = reader.readLine()) != null) {
+        while ((input = reader.readLine()) != null) {
             builder.append(input);
         }
 

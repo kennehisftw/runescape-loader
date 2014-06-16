@@ -11,7 +11,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 
 /**
  * Created by Kenneth on 6/12/2014.
@@ -45,7 +44,8 @@ public class RSApplet extends JPanel implements AppletStub {
 
     /**
      * Instantiates the RSApplet class
-     * @param worldId the world you wish to load in to
+     *
+     * @param worldId   the world you wish to load in to
      * @param oldschool true for 07, false for rs3
      */
     public RSApplet(final int worldId, final boolean oldschool) {
@@ -107,7 +107,7 @@ public class RSApplet extends JPanel implements AppletStub {
          */
         URLClassLoader classLoader = null;
         try {
-            classLoader = new URLClassLoader(new URL[] { jar.toURI().toURL() });
+            classLoader = new URLClassLoader(new URL[]{jar.toURI().toURL()});
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -159,6 +159,7 @@ public class RSApplet extends JPanel implements AppletStub {
 
     /**
      * Gets the applet instance
+     *
      * @return applet
      */
     public Applet getApplet() {

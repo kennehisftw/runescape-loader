@@ -15,6 +15,20 @@ import java.text.ParseException;
 
 public class AdventurersLogFrame extends JFrame {
 
+    private JLabel label1;
+    private JTextField textField1;
+    private JButton button1;
+    private JLabel label2;
+    private JLabel label3;
+    private JLabel label4;
+    private JScrollPane scrollPane1;
+    private JList<String> list1;
+    private DefaultListModel<String> model;
+    public AdventurersLogFrame() {
+        super("Adventurer's Log Lookup");
+        initComponents();
+    }
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
@@ -25,11 +39,6 @@ public class AdventurersLogFrame extends JFrame {
         frame.setVisible(true);
     }
 
-    public AdventurersLogFrame() {
-        super("Adventurer's Log Lookup");
-        initComponents();
-    }
-
     private void initComponents() {
 
         label1 = new JLabel();
@@ -37,7 +46,7 @@ public class AdventurersLogFrame extends JFrame {
         textField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     btnActionEvent();
                 }
             }
@@ -132,11 +141,11 @@ public class AdventurersLogFrame extends JFrame {
 
         File image = new File(Utilities.getContentDirectory() + "images/skills/Attack.png");
 
-        for(FeedItem item : loader.getElements()) {
+        for (FeedItem item : loader.getElements()) {
             try {
                 model.addElement(
                         "<html>" +
-                                "<img src=\""+getIconURL(item.getDescriptionAsText())+"\" alt=\"some_text\">" +
+                                "<img src=\"" + getIconURL(item.getDescriptionAsText()) + "\" alt=\"some_text\">" +
                                 "&nbsp;&nbsp;&nbsp;&nbsp;" + item.getDescriptionAsText() +
                                 "</html>"
                 );
@@ -166,11 +175,11 @@ public class AdventurersLogFrame extends JFrame {
 
     public URL getIconURL(String element) throws MalformedURLException {
 
-        File image = new File(Utilities.getContentDirectory() + "images/skills/skillbar.png");
+        File image = new File(Utilities.getContentDirectory() + "images/skills/monsterkill.png");
 
-        if(element.contains("Daemonheim")) {
+        if (element.contains("Daemonheim")) {
             image = new File(Utilities.getContentDirectory() + "images/skills/Dungeoneering.png");
-        } else if(element.contains("treasure trail")) {
+        } else if (element.contains("treasure trail")) {
             image = new File(Utilities.getContentDirectory() + "images/skills/clue.png");
         } else {
             File parent = new File(Utilities.getContentDirectory() + "images/skills/");
@@ -182,15 +191,5 @@ public class AdventurersLogFrame extends JFrame {
         }
         return image.toURI().toURL();
     }
-
-    private JLabel label1;
-    private JTextField textField1;
-    private JButton button1;
-    private JLabel label2;
-    private JLabel label3;
-    private JLabel label4;
-    private JScrollPane scrollPane1;
-    private JList<String> list1;
-    private DefaultListModel<String> model;
 }
 

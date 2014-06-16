@@ -1,6 +1,5 @@
 package io.github.kennehisftw.utils.hiscores;
 
-import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 import io.github.kennehisftw.swing.VerticalFlowLayout;
 import io.github.kennehisftw.utils.Utilities;
 
@@ -10,7 +9,6 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 
 /**
  * Created by Kenneth on 6/15/2014.
@@ -20,7 +18,15 @@ public class HiscoresForm extends JFrame {
     private final DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###");
 
     private HiscoresLookup lookup;
-
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // Generated using JFormDesigner Evaluation license - asdf asdf
+    private JTextField textField1;
+    private JCheckBox checkBox1;
+    private JLabel label1;
+    private JLabel label2;
+    private JButton button1;
+    private JPanel panel1;
+    private JLabel label3;
     public HiscoresForm() {
         super("Player Stats Lookup");
         getContentPane().setLayout(new VerticalFlowLayout());
@@ -34,7 +40,7 @@ public class HiscoresForm extends JFrame {
         label1.setText(textField1.getText());
         setTitle("Player Stats Lookup - " + textField1.getText());
         panel1.setLayout(new VerticalFlowLayout());
-        for(Skill skill : lookup.getSkillMap().values()) {
+        for (Skill skill : lookup.getSkillMap().values()) {
             panel1.add(createSkillPanel(skill));
         }
         this.label2.setIcon(new ImageIcon(Utilities.downloadImage("http://services.runescape.com/m=avatar-rs/" + textField1.getText() + "/chat.png")));
@@ -53,7 +59,7 @@ public class HiscoresForm extends JFrame {
         final JPanel panel = new JPanel();
         panel.setOpaque(false);
         panel.setBackground(Color.WHITE);
-        JLabel label1  = new JLabel();
+        JLabel label1 = new JLabel();
         JLabel label2 = new JLabel();
         JLabel label3 = new JLabel();
         panel.setToolTipText("<html>Experience: " + decimalFormat.format(skill.getExperience())
@@ -100,8 +106,8 @@ public class HiscoresForm extends JFrame {
         textField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                   btnActionEvent();
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnActionEvent();
                 }
             }
         });
@@ -202,16 +208,6 @@ public class HiscoresForm extends JFrame {
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - asdf asdf
-    private JTextField textField1;
-    private JCheckBox checkBox1;
-    private JLabel label1;
-    private JLabel label2;
-    private JButton button1;
-    private JPanel panel1;
-    private JLabel label3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
 }

@@ -9,12 +9,6 @@ import io.github.kennehisftw.utils.screenshot.Imgur;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Created by Kenneth on 6/13/2014.
@@ -25,17 +19,14 @@ public class GameSelection extends JFrame {
         Creates the button objects
      */
     private final JButton runeScape3, oldschool;
-
-    /*
-        Creates the image objects
-     */
-    private Image rs3Image, osImage, backGround, icon;
-
     /*
         Creates the ImagePanel object
      */
     private final ImagePanel imagePanel;
-
+    /*
+        Creates the image objects
+     */
+    private Image rs3Image, osImage, backGround, icon;
     /*
         Create an applet object
      */

@@ -26,6 +26,44 @@ import java.util.Map;
 
 public class GELookupForm extends JFrame {
 
+    private Map<String, Integer> map = new LinkedHashMap<>();
+    private JTextField textField1;
+    private JScrollPane scrollPane1;
+    private JList list1;
+    private JPanel panel1;
+    private JLabel label1;
+    private JPanel panel2;
+    private JLabel label2;
+    private JLabel label3;
+    private JLabel label4;
+    private JLabel label5;
+    private JLabel label6;
+    private JButton button2;
+    private JLabel label7;
+    private JLabel label8;
+    private DefaultListModel<String> model;
+    public GELookupForm() {
+
+        Utilities.downloadFile("http://pastebin.com/raw.php?i=5M8NW38G",
+                Utilities.getContentDirectory() + "data/items.txt");
+
+        System.out.println("Loading map..");
+        BufferedReader reader = null;
+        File file = null;
+        try {
+            file = new File(Utilities.getContentDirectory() + "data/items.txt");
+            reader = new BufferedReader(new InputStreamReader(file.toURI().toURL().openStream()));
+            String input;
+            while ((input = reader.readLine()) != null) {
+                String[] data = input.split(":");
+                map.putIfAbsent(data[1], Integer.parseInt(data[0]));
+            }
+        } catch (IOException a) {
+            System.out.println("Error loading map data");
+        }
+        initComponents();
+    }
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
@@ -39,30 +77,6 @@ public class GELookupForm extends JFrame {
         SwingUtilities.invokeLater(() -> geLookupForm.setVisible(true));
     }
 
-    private Map<String, Integer> map = new LinkedHashMap<>();
-
-    public GELookupForm() {
-
-        Utilities.downloadFile("http://pastebin.com/raw.php?i=5M8NW38G",
-                Utilities.getContentDirectory() + "data/items.txt");
-
-        System.out.println("Loading map..");
-        BufferedReader reader = null;
-        File file = null;
-        try {
-            file = new File(Utilities.getContentDirectory() + "data/items.txt");
-            reader = new BufferedReader(new InputStreamReader(file.toURI().toURL().openStream()));
-            String input;
-            while((input = reader.readLine()) != null) {
-                String[] data = input.split(":");
-                map.putIfAbsent(data[1], Integer.parseInt(data[0]));
-            }
-        } catch(IOException a) {
-            System.out.println("Error loading map data");
-        }
-        initComponents();
-    }
-
     private void initComponents() {
         setTitle("Grand Exchange Lookup");
 
@@ -73,7 +87,7 @@ public class GELookupForm extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 model.removeAllElements();
-                if(!textField1.getText().isEmpty() && textField1.getText().length() >= 2) {
+                if (!textField1.getText().isEmpty() && textField1.getText().length() >= 2) {
                     for (String str : map.keySet()) {
                         if (str.toLowerCase().contains(textField1.getText().toLowerCase())) {
                             model.addElement(str);
@@ -95,10 +109,10 @@ public class GELookupForm extends JFrame {
                 Image icon = null;
                 try {
                     icon = ImageIO.read(new URL(item.getLargeIcon().replace("4478_", "4485_")));
-                } catch(IOException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println(icon.getWidth(null) + ":"+ icon.getHeight(null));
+                System.out.println(icon.getWidth(null) + ":" + icon.getHeight(null));
                 label1.setIcon(new ImageIcon(icon));
                 label1.repaint();
                 label1.revalidate();
@@ -108,12 +122,12 @@ public class GELookupForm extends JFrame {
 
                 String description = item.getDescription();
 
-                label8.setText("<html>"+ description + "</html>");
+                label8.setText("<html>" + description + "</html>");
                 label2.setText("<html> Current price: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                        + (item.getPrices().getCurrent().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
-                        + item.getPrices().getCurrent().getPrice() + "</html>"
+                                + (item.getPrices().getCurrent().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
+                                + item.getPrices().getCurrent().getPrice() + "</html>"
                 );
-                label6.setText("<html> Today's change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+                label6.setText("<html> Today's change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                                 (item.getPrices().getToday().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getToday().getPrice() + "</html>"
                 );
@@ -121,11 +135,11 @@ public class GELookupForm extends JFrame {
                                 (item.getPrices().getDay30().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getDay30().getChange() + "</html>"
                 );
-                label4.setText("<html> 90 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+                label4.setText("<html> 90 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                                 (item.getPrices().getDay90().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getDay90().getChange() + "</html>"
                 );
-                label3.setText("<html> 180 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+                label3.setText("<html> 180 Day Change: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                                 (item.getPrices().getDay180().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
                                 + item.getPrices().getDay180().getChange() + "</html>"
                 );
@@ -267,21 +281,5 @@ public class GELookupForm extends JFrame {
         pack();
         setLocationRelativeTo(getOwner());
     }
-
-    private JTextField textField1;
-    private JScrollPane scrollPane1;
-    private JList list1;
-    private JPanel panel1;
-    private JLabel label1;
-    private JPanel panel2;
-    private JLabel label2;
-    private JLabel label3;
-    private JLabel label4;
-    private JLabel label5;
-    private JLabel label6;
-    private JButton button2;
-    private JLabel label7;
-    private JLabel label8;
-    private DefaultListModel<String> model;
 }
 

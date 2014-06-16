@@ -12,7 +12,8 @@ public class Skill {
 
 
     public Skill(String skillName, int rank, int level, long experience) {
-        this.rank = rank; this.level = level;
+        this.rank = rank;
+        this.level = level;
         this.experience = experience;
         this.skillName = skillName;
     }

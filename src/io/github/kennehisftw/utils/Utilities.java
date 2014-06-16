@@ -13,9 +13,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 
 /**
@@ -25,7 +22,8 @@ public class Utilities {
 
     /**
      * Handy static method for downloading and saving files.
-     * @param url the complete web URL for the file
+     *
+     * @param url      the complete web URL for the file
      * @param location the complete destination including extension for the file
      * @return true if the file exists in the location, false if an exception is thrown or the file does not exist
      */
@@ -38,14 +36,14 @@ public class Utilities {
             final int contentLength = connection.getContentLength();
             final File destination = new File(location);
 
-            if(destination.exists()) {
+            if (destination.exists()) {
                 final URLConnection savedFileConnection = destination.toURI().toURL().openConnection();
-                if(savedFileConnection.getContentLength() == contentLength) {
+                if (savedFileConnection.getContentLength() == contentLength) {
                     return true;
                 }
             } else {
                 final File parent = destination.getParentFile();
-                if(!parent.exists()) parent.mkdirs();
+                if (!parent.exists()) parent.mkdirs();
             }
 
             final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
@@ -54,7 +52,7 @@ public class Utilities {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
 
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
             return false;
         }
@@ -65,6 +63,7 @@ public class Utilities {
 
     /**
      * Used to change the loading of all files
+     *
      * @return the directory which files load from
      */
     public static String getContentDirectory() {
@@ -73,6 +72,7 @@ public class Utilities {
 
     /**
      * Uses Toolkit.getDefaultToolkit() to load an image from the specified file location
+     *
      * @param file the absolute location of the image
      * @return the image
      */
@@ -86,7 +86,7 @@ public class Utilities {
         try {
             url = new URL(link);
             image = ImageIO.read(url);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             return null;
         }
         return image;
@@ -95,8 +95,8 @@ public class Utilities {
     public static void writeImage(Image image) {
 
         File parent = new File(getContentDirectory() + "screenshots/");
-        if(!parent.exists()) parent.mkdirs();
-        File location = new File(parent.toString() + File.separator +  System.currentTimeMillis() + ".png");
+        if (!parent.exists()) parent.mkdirs();
+        File location = new File(parent.toString() + File.separator + System.currentTimeMillis() + ".png");
 
         try {
             location.createNewFile();
@@ -110,7 +110,7 @@ public class Utilities {
             e.printStackTrace();
             return;
         }
-        System.out.println("File written: "+ location);
+        System.out.println("File written: " + location);
     }
 
     public static String downloadString(String url, boolean splitLines) throws IOException {
@@ -120,7 +120,7 @@ public class Utilities {
         final StringBuilder builder = new StringBuilder();
 
         String input;
-        while((input = reader.readLine()) != null) {
+        while ((input = reader.readLine()) != null) {
             builder.append(input + (splitLines ? "\n" : ""));
         }
 
@@ -144,7 +144,7 @@ public class Utilities {
             String imageURL = null;
             try {
                 imageURL = imgur.upload(image);
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 System.out.println("Error uploading screen shot.");
             }
             StringSelection stringSelection = new StringSelection(imageURL);

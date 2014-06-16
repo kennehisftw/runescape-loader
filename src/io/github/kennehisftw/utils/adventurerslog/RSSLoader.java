@@ -24,7 +24,7 @@ public class RSSLoader {
 
         try {
             url = new URL("http://services.runescape.com/m=adventurers-log/rssfeed?searchName=" + username);
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
 
@@ -35,7 +35,7 @@ public class RSSLoader {
         } catch (FeedXMLParseException | UnsupportedFeedException | FeedIOException e) {
             e.printStackTrace();
 
-            String[] options = new String[] {"OK"};
+            String[] options = new String[]{"OK"};
             JOptionPane.showOptionDialog(null,
                     "The player you searched does not exist or is free to play!", "Error looking up player",
                     JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
@@ -43,7 +43,7 @@ public class RSSLoader {
 
         int itemCount = feed.getItemCount();
         elements = new FeedItem[itemCount];
-        for(int i = 0; i < itemCount; i++) {
+        for (int i = 0; i < itemCount; i++) {
             elements[i] = feed.getItem(i);
         }
     }

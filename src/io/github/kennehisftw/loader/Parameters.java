@@ -1,5 +1,6 @@
 package io.github.kennehisftw.loader;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +17,7 @@ public class Parameters {
     /*
         Generic map for holding all the parameters we're going to parse
      */
-    private static final  Map<String, String> PARAMETER_MAP = new HashMap<>();
+    private static final Map<String, String> PARAMETER_MAP = new HashMap<>();
     /*
         Universal String base for both rs3 and 07 parameters
      */
@@ -24,7 +25,8 @@ public class Parameters {
 
     /**
      * Creates a new instance of the parameters class.
-     * @param worldId the world you wish to load into
+     *
+     * @param worldId   the world you wish to load into
      * @param oldschool true for 07 false for rs3
      */
     public Parameters(final int worldId, final boolean oldschool) {
@@ -43,8 +45,13 @@ public class Parameters {
          */
         try {
             urlConnection = new URL(parameterURL).openConnection();
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
+
+            String[] options = new String[]{"OK"};
+            JOptionPane.showOptionDialog(null,
+                    "Please ensure your internet connection is working properly and restart the client.", "Error connecting to website",
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
          /*
@@ -67,8 +74,13 @@ public class Parameters {
          */
         try {
             reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
+
+            String[] options = new String[]{"OK"};
+            JOptionPane.showOptionDialog(null,
+                    "Could not initialize reader, please restart the client.", "Error reading stream",
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
         /*
@@ -85,16 +97,12 @@ public class Parameters {
                 /*
                     Check if the line contains an identifier, in this case, an = sign. Parse it accordingly.
                  */
-                if(input.contains("=")) {
+                if (input.contains("=")) {
 
                     /*
                         Strip all formatting from the input line.
                      */
-                    input = input.replaceAll("\">'", "\"").replaceAll("'", "")
-                            .replaceAll("\\(", "").replaceAll("\\)", "")
-                            .replaceAll("\"", "").replaceAll(" ", "")
-                            .replaceAll("param=", "")
-                            .replaceAll(";", "").replaceAll("value", "");
+                    input = input.replaceAll("param=", "");
 
                     /*
                         Create a String array with the parts split at =
@@ -132,8 +140,12 @@ public class Parameters {
                 Close the BufferedReader
              */
             reader.close();
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
+            String[] options = new String[]{"OK"};
+            JOptionPane.showOptionDialog(null,
+                    "Please check your internet connection and restar the client!", "Error loading data",
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
         System.out.println(getParameter("initial_jar"));
@@ -141,8 +153,9 @@ public class Parameters {
 
     /**
      * Stores the given data in the Parameter map if it does not already exist.
-     * @param key   The identification key
-     * @param val   The parameter data
+     *
+     * @param key The identification key
+     * @param val The parameter data
      */
     private void addParam(String key, String val) {
         PARAMETER_MAP.putIfAbsent(key, val);
@@ -150,6 +163,7 @@ public class Parameters {
 
     /**
      * Returns the value based on the key. If the key isn't found, it returns a blank string.
+     *
      * @param key
      * @return the retrieved parameter
      */
