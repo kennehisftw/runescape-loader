@@ -103,26 +103,32 @@ public class GELookupForm extends JFrame {
                 label1.repaint();
                 label1.revalidate();
 
+
                 label7.setText(item.getName());
 
                 String description = item.getDescription();
-                /*System.out.println("description length: "+ description.length());
-                if(description.length() >= 10) {
-                    String[] parts = description.split(" ");
-                    int center = description.indexOf(parts[(parts.length / 2) + 1]);
-                    System.out.println(center);
-                    String temp = description;
-                    description = "<html>"+ temp.substring(0, center) + "<br>" + temp.substring(center) + "</html>";
-                }*/
 
-                System.out.println(description);
-
-                label8.setText("<html>"+description + "</html>");
-                label2.setText("Current price: "+ item.getPrices().getCurrent().getPrice());
-                label3.setText("Today's change: "+ item.getPrices().getToday().getPrice());
-                label4.setText("30 Day Change:" + item.getPrices().getDay30().getChange());
-                label5.setText("90 Day Change: "+ item.getPrices().getDay90().getChange());
-                label6.setText("180 Day Change: "+ item.getPrices().getDay180().getChange());
+                label8.setText("<html>"+ description + "</html>");
+                label2.setText("<html> Current price: "
+                        + (item.getPrices().getCurrent().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
+                        + item.getPrices().getCurrent().getPrice() + "</html>"
+                );
+                label6.setText("<html> Today's change: "+
+                                (item.getPrices().getToday().getPrice().contains("-") ? "<font color='red'>" : "<font color='green'>")
+                                + item.getPrices().getToday().getPrice() + "</html>"
+                );
+                label5.setText("<html> 30 Day Change:" +
+                                (item.getPrices().getDay30().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
+                                + item.getPrices().getDay30().getChange() + "</html>"
+                );
+                label4.setText("<html> 90 Day Change: "+
+                                (item.getPrices().getDay90().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
+                                + item.getPrices().getDay90().getChange() + "</html>"
+                );
+                label3.setText("<html> 180 Day Change: "+
+                                (item.getPrices().getDay180().getChange().contains("-") ? "<font color='red'>" : "<font color='green'>")
+                                + item.getPrices().getDay180().getChange() + "</html>"
+                );
 
                 SwingUtilities.updateComponentTreeUI(GELookupForm.this);
             }
@@ -136,7 +142,9 @@ public class GELookupForm extends JFrame {
         label5 = new JLabel();
         label6 = new JLabel();
         button2 = new JButton();
+        button2.setEnabled(false);
         label7 = new JLabel();
+        label7.setFont(label7.getFont().deriveFont(Font.BOLD));
         label8 = new JLabel();
 
         //======== this ========
@@ -153,75 +161,54 @@ public class GELookupForm extends JFrame {
 
             //---- label1 ----
             label1.setHorizontalAlignment(SwingConstants.CENTER);
-            //label1.setIcon(new ImageIcon("C:\\Users\\Kenneth\\Desktop\\New folder\\resources\\largepile.png"));
 
             //======== panel2 ========
             {
                 panel2.setBorder(new TitledBorder("Price Information"));
 
                 //---- label2 ----
-                label2.setText("CurrentPrice:");
-                label2.setFont(label2.getFont().deriveFont(label2.getFont().getSize() + 1f));
+                label2.setText("Current Price");
+                label2.setFont(label2.getFont().deriveFont(label2.getFont().getStyle() | Font.BOLD));
 
                 //---- label3 ----
-                label3.setText("Today's Change:");
-                label3.setFont(label3.getFont().deriveFont(label3.getFont().getSize() + 1f));
+                label3.setText("180 Day change:");
 
                 //---- label4 ----
-                label4.setText("30 Day Change:");
-                label4.setFont(label4.getFont().deriveFont(label4.getFont().getSize() + 1f));
+                label4.setText("90 Day change:");
 
                 //---- label5 ----
-                label5.setText("90 Day Change:");
-                label5.setFont(label5.getFont().deriveFont(label5.getFont().getSize() + 1f));
+                label5.setText("30 Day change:");
 
                 //---- label6 ----
-                label6.setText("180 Day Change:");
-                label6.setFont(label6.getFont().deriveFont(label6.getFont().getSize() + 1f));
-
-                //---- button2 ----
-                button2.setText("View Graph");
+                label6.setText("Today's change:");
 
                 GroupLayout panel2Layout = new GroupLayout(panel2);
                 panel2.setLayout(panel2Layout);
                 panel2Layout.setHorizontalGroup(
                         panel2Layout.createParallelGroup()
-                                .addGroup(panel2Layout.createSequentialGroup()
-                                        .addGroup(panel2Layout.createParallelGroup()
-                                                .addComponent(label5)
-                                                .addComponent(label2)
-                                                .addComponent(label4)
-                                                .addComponent(label3))
-                                        .addContainerGap(175, Short.MAX_VALUE))
-                                .addGroup(panel2Layout.createSequentialGroup()
-                                        .addComponent(label6)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                                        .addComponent(button2))
+                                .addComponent(label3, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                .addComponent(label2, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                .addComponent(label4, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                .addComponent(label5, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                .addComponent(label6, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                 );
                 panel2Layout.setVerticalGroup(
                         panel2Layout.createParallelGroup()
                                 .addGroup(panel2Layout.createSequentialGroup()
                                         .addComponent(label2)
-                                        .addGap(16, 16, 16)
-                                        .addComponent(label3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(label6)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                                        .addComponent(label5)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(label4)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(label5)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(label6))
-                                .addGroup(panel2Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(button2))
+                                        .addComponent(label3))
                 );
             }
 
             //---- label7 ----
-            //label7.setText("Off-hand pile of coins");
-            label7.setFont(label7.getFont().deriveFont(label7.getFont().getSize() + 1f));
-
-            //---- label8 ----
-            //label8.setText("A powerful pile of coins");
+            label7.setFont(label7.getFont().deriveFont(label7.getFont().getSize() + 2f));
 
             GroupLayout panel1Layout = new GroupLayout(panel1);
             panel1.setLayout(panel1Layout);
@@ -235,7 +222,7 @@ public class GELookupForm extends JFrame {
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                                     .addComponent(label1, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
                                     .addContainerGap())
-                            .addComponent(panel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panel2, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             );
             panel1Layout.setVerticalGroup(
                     panel1Layout.createParallelGroup()
@@ -279,7 +266,6 @@ public class GELookupForm extends JFrame {
         );
         pack();
         setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
     private JTextField textField1;

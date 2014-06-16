@@ -7,6 +7,7 @@ import it.sauronsoftware.feed4j.UnsupportedFeedException;
 import it.sauronsoftware.feed4j.bean.Feed;
 import it.sauronsoftware.feed4j.bean.FeedItem;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 
@@ -33,6 +34,11 @@ public class RSSLoader {
             feed = FeedParser.parse(url);
         } catch (FeedXMLParseException | UnsupportedFeedException | FeedIOException e) {
             e.printStackTrace();
+
+            String[] options = new String[] {"OK"};
+            JOptionPane.showOptionDialog(null,
+                    "The player you searched does not exist or is free to play!", "Error looking up player",
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
         int itemCount = feed.getItemCount();

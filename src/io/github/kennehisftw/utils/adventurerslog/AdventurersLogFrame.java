@@ -26,6 +26,7 @@ public class AdventurersLogFrame extends JFrame {
     }
 
     public AdventurersLogFrame() {
+        super("Adventurer's Log Lookup");
         initComponents();
     }
 
