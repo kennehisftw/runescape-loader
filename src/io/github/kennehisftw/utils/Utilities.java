@@ -9,6 +9,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
@@ -128,7 +129,7 @@ public class Utilities {
     }
 
     public static void screenshot(Window parent, Imgur imgur, TrayIcon trayIcon) {
-        System.out.println("Uploading screenshot");
+        trayIcon.displayMessage("Screenshot Captured", "Please wait while the screenshot uploads.", TrayIcon.MessageType.INFO);
 
         Robot robot = null;
         try {
@@ -153,6 +154,11 @@ public class Utilities {
             trayIcon.displayMessage(
                     "Screen Shot Taken!",
                     "Uploaded Screen Shot to " + imageURL, TrayIcon.MessageType.INFO);
+            try {
+                Desktop.getDesktop().browse(new URL(imageURL).toURI());
+            } catch (IOException | URISyntaxException e) {
+                trayIcon.displayMessage("Error opening browser!", "The screenshot is not lost, we just couldn't open it.", TrayIcon.MessageType.ERROR);
+            }
         });
         thread.start();
     }
