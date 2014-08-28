@@ -3,12 +3,12 @@ package io.github.kennehisftw.utils.calculators.prayer;
 /**
  * Created by Kenneth on 7/25/2014.
  */
-public class Skill {
+class Skill {
 
-    private String skillName;
-    private int rank;
-    private int level;
-    private long experience;
+    private final String skillName;
+    private final int rank;
+    private final int level;
+    private final long experience;
 
     public Skill(String skillName, int rank, int level, long experience) {
         this.rank = rank;

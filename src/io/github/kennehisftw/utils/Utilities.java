@@ -30,13 +30,10 @@ public class Utilities {
      */
     public static boolean downloadFile(String url, String location) {
         try {
-
             final URLConnection connection = new URL(url).openConnection();
             connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
-
             final int contentLength = connection.getContentLength();
             final File destination = new File(location);
-
             if (destination.exists()) {
                 final URLConnection savedFileConnection = destination.toURI().toURL().openConnection();
                 if (savedFileConnection.getContentLength() == contentLength) {
@@ -46,18 +43,14 @@ public class Utilities {
                 final File parent = destination.getParentFile();
                 if (!parent.exists()) parent.mkdirs();
             }
-
             final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
-
             final FileOutputStream fos = new FileOutputStream(destination);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
-
         } catch (IOException exception) {
             exception.printStackTrace();
             return false;
         }
-
         System.out.println(url + "->" + location);
         return new File(location).exists();
     }
@@ -82,8 +75,8 @@ public class Utilities {
     }
 
     public static Image downloadImage(String link) {
-        Image image = null;
-        URL url = null;
+        Image image;
+        URL url;
         try {
             url = new URL(link);
             image = ImageIO.read(url);
@@ -93,18 +86,15 @@ public class Utilities {
         return image;
     }
 
-    public static void writeImage(Image image) {
-
+    private static void writeImage(Image image) {
         File parent = new File(getContentDirectory() + "screenshots/");
         if (!parent.exists()) parent.mkdirs();
         File location = new File(parent.toString() + File.separator + System.currentTimeMillis() + ".png");
-
         try {
             location.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try {
             ImageIO.write((RenderedImage) image, "png", location);
         } catch (IOException e) {
@@ -122,7 +112,7 @@ public class Utilities {
 
         String input;
         while ((input = reader.readLine()) != null) {
-            builder.append(input + (splitLines ? "\n" : ""));
+            builder.append(input).append(splitLines ? "\n" : "");
         }
 
         return builder.toString();
@@ -130,16 +120,13 @@ public class Utilities {
 
     public static void screenshot(Window parent, Imgur imgur, TrayIcon trayIcon) {
         trayIcon.displayMessage("Screenshot Captured", "Please wait while the screenshot uploads.", TrayIcon.MessageType.INFO);
-
         Robot robot = null;
         try {
             robot = new Robot();
         } catch (AWTException e) {
             e.printStackTrace();
         }
-
         BufferedImage image = robot.createScreenCapture(parent.getBounds());
-
         Utilities.writeImage(image);
         Thread thread = new Thread(() -> {
             String imageURL = null;
@@ -151,9 +138,7 @@ public class Utilities {
             StringSelection stringSelection = new StringSelection(imageURL);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
-            trayIcon.displayMessage(
-                    "Screen Shot Taken!",
-                    "Uploaded Screen Shot to " + imageURL, TrayIcon.MessageType.INFO);
+            trayIcon.displayMessage("Screen Shot Taken!", "Uploaded Screen Shot to " + imageURL, TrayIcon.MessageType.INFO);
             try {
                 Desktop.getDesktop().browse(new URL(imageURL).toURI());
             } catch (IOException | URISyntaxException e) {

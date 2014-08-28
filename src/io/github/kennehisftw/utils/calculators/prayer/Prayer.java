@@ -12,35 +12,31 @@ import java.text.ParseException;
  * Created by Kenneth on 7/25/2014.
  */
 public class Prayer extends JFrame {
+    public static final int[] XP_TABLE = new int[120 + 2];
+    static {
+        int i = 0;
+        for (int j = 0; j < 120; j++) {
+            int k = j + 1;
+            int l = (int) ((double) k + 300D * Math.pow(2D, (double) k / 7D));
+            i += l;
+            XP_TABLE[j + 2] = i / 4;
+        }
+    }
+
+
+    private final DecimalFormat format = new DecimalFormat("###,###,###");
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JSpinner spinner1;
+    private JComboBox<PrayerMethod> comboBox1;
+    private JLabel label6;
 
     public Prayer() {
         super("Prayer Calculator");
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
-    private final DecimalFormat format = new DecimalFormat("###,###,###");
-
-    private long getExperienceAt(int level) {
-        return XP_TABLE[level];
-    }
-
-    public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650,
-            801, 969, 1154, 1358, 1584, 1833, 2107, 2411, 2746, 3115, 3523,
-            3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031,
-            13363, 14833, 16456, 18247, 20224, 22406, 24815, 27473, 30408,
-            33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983, 75127,
-            83014, 91721, 101333, 111945, 123660, 136594, 150872, 166636,
-            184040, 203254, 224466, 247886, 273742, 302288, 333804, 368599,
-            407015, 449428, 496254, 547953, 605032, 668051, 737627, 814445,
-            899257, 992895, 1096278, 1210421, 1336443, 1475581, 1629200,
-            1798808, 1986068, 2192818, 2421087, 2673114, 2951373, 3258594,
-            3597792, 3972294, 4385776, 4842295, 5346332, 5902831, 6517253,
-            7195629, 7944614, 8771558, 9684577, 10692629, 11805606, 13034431,
-            14391160, 15889109, 17542976, 19368992, 21385073, 23611006,
-            26068632, 28782069, 31777943, 35085654, 38737661, 42769801,
-            47221641, 52136869, 57563718, 63555443, 70170840, 77474828,
-            85539082, 94442737, 104273167};
 
     public static void main(String[] args) {
         try {
@@ -53,78 +49,29 @@ public class Prayer extends JFrame {
         prayer.setVisible(true);
     }
 
-    public String html(String text) {
-        return "<html>" + text + "</html>";
+    private long getExperienceAt(int level) {
+        return XP_TABLE[level];
     }
 
-    private enum PrayerMethod {
-        IMPIOUS_ASHES(1, 4),
-        BONES(1, 4.5),
-        WOLF_BONES(1, 4.5),
-        BURNT_BONES(1, 4.5),
-        MONKEY_BONES(1, 5),
-        BAT_BONES(1,  5.33),
-        ACCURSED_ASHES(1, 12.5),
-        BIG_BONES(1, 15),
-        CURVED_BONES(1, 15),
-        JOGRE_BONES(1, 15),
-        LONG_BONES(1, 15),
-        ZOGRE_BONES(1, 22.5),
-        SHAIKAHAN_BONES(1, 25),
-        BABYDRAGON_BONES(1, 30),
-        LOAR_REMAINS(1, 33),
-        PHRIN_REMAINS(1, 46.5),
-        WYVERN_BONES(1, 50),
-        RIYL_REMAINS(1, 59.5),
-        INFERNAL_ASHES(1, 62.5),
-        DRAGON_BONES(1, 72),
-        BURN_VYREWATCH_CORPSE(1, 80),
-        ASYN_REMAINS(1, 82.5),
-        FAYRG_BONES(1, 84),
-        RAURG_BONES(1, 96),
-        FIYR_REMAINS(1, 84),
-        IMPIUS_URN(1, 120),
-        DAGANNOTH_BONES(1, 125),
-        AIRUT_BONES(1, 132.5),
-        OURG_BONES(1, 140),
-        FROST_DRAGON_BONES(1, 180),
-        ACCURSED_URN(1, 375),
-        INFERNAL_URN(1, 1875),
-        ACCURSED_ASHES_ECTO(1, 50),
-        BIG_BONES_ECTO(1, 60),
-        ZOGRE_BONES_ECTO(1, 90),
-        DRAGON_BONES_ALTER(1, 252)
-        ;
-
-        private final int requiredLevel;
-        private final double experience;
-        private PrayerMethod(int requiredLevel, double experience) {
-            this.requiredLevel = requiredLevel;
-            this.experience = experience;
-        }
-
-        @Override
-        public String toString() {
-            return name().charAt(0) + name().substring(1).toLowerCase().replaceAll("_", " ");
-        }
-
+    String html(String text) {
+        return "<html>" + text + "</html>";
     }
 
     private void initComponents() {
         textField1 = new JTextField();
-        label1 = new JLabel();
+        JLabel label1 = new JLabel();
         textField2 = new JTextField();
-        label2 = new JLabel();
+        JLabel label2 = new JLabel();
         textField3 = new JTextField();
-        label3 = new JLabel();
+        JLabel label3 = new JLabel();
         spinner1 = new JSpinner();
-        label4 = new JLabel();
-        button1 = new JButton();
-        label5 = new JLabel();
+        JLabel label4 = new JLabel();
+        JButton button1 = new JButton();
+        JLabel label5 = new JLabel();
         comboBox1 = new JComboBox<>(PrayerMethod.values());
-        panel1 = new JPanel();
+        JPanel panel1 = new JPanel();
         label6 = new JLabel();
-        button2 = new JButton();
+        JButton button2 = new JButton();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -152,17 +99,16 @@ public class Prayer extends JFrame {
         button1.addActionListener(listener -> {
             final String currentXPString = textField2.getText();
             int currentXP = 0;
-            if(currentXPString.isEmpty()) {
+            if (currentXPString.isEmpty()) {
                 label6.setText(html("Current Experience CANNOT be empty!"));
                 return;
             }
             try {
                 currentXP = Integer.parseInt(currentXPString);
-            } catch(NumberFormatException exception) {
+            } catch (NumberFormatException exception) {
                 label6.setText(html("Please enter only numbers into the experience boxes!"));
                 return;
             }
-
 
             final String targetXPString = textField3.getText();
             int targetXP = 0;
@@ -170,7 +116,7 @@ public class Prayer extends JFrame {
             try {
                 if (targetXPString.isEmpty()) {
                     targetLevel = (int) spinner1.getValue();
-                    if(targetLevel == 0) {
+                    if (targetLevel == 0) {
                         label6.setText(html("You need to enter either a target experience or select a level!"));
                         return;
                     } else {
@@ -179,17 +125,16 @@ public class Prayer extends JFrame {
                 } else {
                     targetXP = Integer.parseInt(targetXPString);
                 }
-            } catch(NumberFormatException exception) {
+            } catch (NumberFormatException exception) {
                 label6.setText(html("Please enter only numbers into the experience boxes!"));
                 return;
             }
-            if(currentXP > targetXP) {
+            if (currentXP > targetXP) {
                 label6.setText(html("Current cannot be greater than target!"));
-                return;
             } else {
                 PrayerMethod method = (PrayerMethod) comboBox1.getSelectedItem();
                 int difference = (int) ((targetXP - currentXP) / method.experience);
-                label6.setText(html("You would need " + format.format(difference) + " " + method + (targetLevel == 0 ? " to reach " + format.format(targetXP) + " experience!" : " to reach level " + targetLevel + "!") ));
+                label6.setText(html("You would need " + format.format(difference) + " " + method + (targetLevel == 0 ? " to reach " + format.format(targetXP) + " experience!" : " to reach level " + targetLevel + "!")));
             }
 
         });
@@ -198,7 +143,7 @@ public class Prayer extends JFrame {
         button2.setText("Load Hiscores");
         button2.addActionListener(listener -> {
             String username = textField1.getText();
-            if(!username.isEmpty()) {
+            if (!username.isEmpty()) {
                 final Hiscores hiscores = new Hiscores(username);
                 final Skill prayer = hiscores.getSkills().get(6);
                 textField2.setText(String.valueOf(prayer.getExperience()));
@@ -308,19 +253,57 @@ public class Prayer extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    private JTextField textField1;
-    private JLabel label1;
-    private JTextField textField2;
-    private JLabel label2;
-    private JTextField textField3;
-    private JLabel label3;
-    private JSpinner spinner1;
-    private JLabel label4;
-    private JButton button1;
-    private JLabel label5;
-    private JComboBox<PrayerMethod> comboBox1;
-    private JPanel panel1;
-    private JLabel label6;
-    private JButton button2;
+    private enum PrayerMethod {
+        IMPIOUS_ASHES(1, 4),
+        BONES(1, 4.5),
+        WOLF_BONES(1, 4.5),
+        BURNT_BONES(1, 4.5),
+        MONKEY_BONES(1, 5),
+        BAT_BONES(1, 5.33),
+        ACCURSED_ASHES(1, 12.5),
+        BIG_BONES(1, 15),
+        CURVED_BONES(1, 15),
+        JOGRE_BONES(1, 15),
+        LONG_BONES(1, 15),
+        ZOGRE_BONES(1, 22.5),
+        SHAIKAHAN_BONES(1, 25),
+        BABYDRAGON_BONES(1, 30),
+        LOAR_REMAINS(1, 33),
+        PHRIN_REMAINS(1, 46.5),
+        WYVERN_BONES(1, 50),
+        RIYL_REMAINS(1, 59.5),
+        INFERNAL_ASHES(1, 62.5),
+        DRAGON_BONES(1, 72),
+        BURN_VYREWATCH_CORPSE(1, 80),
+        ASYN_REMAINS(1, 82.5),
+        FAYRG_BONES(1, 84),
+        RAURG_BONES(1, 96),
+        FIYR_REMAINS(1, 84),
+        IMPIUS_URN(1, 120),
+        DAGANNOTH_BONES(1, 125),
+        AIRUT_BONES(1, 132.5),
+        OURG_BONES(1, 140),
+        FROST_DRAGON_BONES(1, 180),
+        ACCURSED_URN(1, 375),
+        INFERNAL_URN(1, 1875),
+        ACCURSED_ASHES_ECTO(1, 50),
+        BIG_BONES_ECTO(1, 60),
+        ZOGRE_BONES_ECTO(1, 90),
+        DRAGON_BONES_ALTER(1, 252);
+
+        private final int requiredLevel;
+        private final double experience;
+
+        private PrayerMethod(int requiredLevel, double experience) {
+            this.requiredLevel = requiredLevel;
+            this.experience = experience;
+        }
+
+        @Override
+        public String toString() {
+            return name().charAt(0) + name().substring(1).toLowerCase().replaceAll("_", " ");
+        }
+
+    }
 
 }

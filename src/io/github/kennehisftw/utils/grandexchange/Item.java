@@ -49,15 +49,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", icon='" + icon + '\'' +
-                ", icon_large='" + icon_large + '\'' +
-                ", type='" + type + '\'' +
-                ", name='" + name + '\'' +
-                ", membersitem=" + membersitem +
-                ", prices=" + prices +
-                '}';
+        return "Item{" + "id=" + id + ", icon='" + icon + '\'' + ", icon_large='" + icon_large + '\'' + ", type='" + type + '\'' + ", name='" + name + '\'' + ", membersitem=" + membersitem + ", prices=" + prices + '}';
     }
 
 
@@ -95,14 +87,7 @@ public class Item {
 
         @Override
         public String toString() {
-            return "Price{" +
-                    "current=" + current +
-                    ", today=" + today +
-                    ", day30=" + days30 +
-                    ", day90=" + days90 +
-                    ", day180=" + days180 +
-                    ", exact='" + exact + '\'' +
-                    '}';
+            return "Price{" + "current=" + current + ", today=" + today + ", day30=" + days30 + ", day90=" + days90 + ", day180=" + days180 + ", exact='" + exact + '\'' + '}';
         }
     }
 
@@ -121,10 +106,7 @@ public class Item {
 
         @Override
         public String toString() {
-            return "Current{" +
-                    "trend='" + trend + '\'' +
-                    ", price='" + price + '\'' +
-                    '}';
+            return "Current{" + "trend='" + trend + '\'' + ", price='" + price + '\'' + '}';
         }
     }
 
@@ -143,10 +125,7 @@ public class Item {
 
         @Override
         public String toString() {
-            return "Today{" +
-                    "trend='" + trend + '\'' +
-                    ", price='" + price + '\'' +
-                    '}';
+            return "Today{" + "trend='" + trend + '\'' + ", price='" + price + '\'' + '}';
         }
     }
 
@@ -165,10 +144,7 @@ public class Item {
 
         @Override
         public String toString() {
-            return "Day30{" +
-                    "trend='" + trend + '\'' +
-                    ", change='" + change + '\'' +
-                    '}';
+            return "Day30{" + "trend='" + trend + '\'' + ", change='" + change + '\'' + '}';
         }
     }
 
@@ -187,10 +163,7 @@ public class Item {
 
         @Override
         public String toString() {
-            return "Day90{" +
-                    "trend='" + trend + '\'' +
-                    ", change='" + change + '\'' +
-                    '}';
+            return "Day90{" + "trend='" + trend + '\'' + ", change='" + change + '\'' + '}';
         }
     }
 
@@ -209,9 +182,7 @@ public class Item {
 
         @Override
         public String toString() {
-            return "Day180{" +
-                    "trend='" + trend + '\'' +
-                    ", change='" + change + '\'' +
+            return "Day180{" + "trend='" + trend + '\'' + ", change='" + change + '\'' +
                     '}';
         }
     }

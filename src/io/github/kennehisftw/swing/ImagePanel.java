@@ -6,12 +6,12 @@ import java.awt.*;
 /**
  * Created by Kenneth on 6/13/2014.
  */
-public class ImagePanel extends JPanel {
+class ImagePanel extends JPanel {
 
     /*
         The background image to be set on the panel
      */
-    private Image background;
+    private final Image background;
 
     /*
         Instantiates the class and sets the image

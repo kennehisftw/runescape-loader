@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by Kenneth on 6/11/2014.
  */
-public class Parameters {
+class Parameters {
 
     /*
         Generic map for holding all the parameters we're going to parse

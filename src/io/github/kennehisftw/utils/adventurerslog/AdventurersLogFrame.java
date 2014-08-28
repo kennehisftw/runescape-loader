@@ -17,13 +17,12 @@ public class AdventurersLogFrame extends JFrame {
 
     private JLabel label1;
     private JTextField textField1;
-    private JButton button1;
     private JLabel label2;
     private JLabel label3;
     private JLabel label4;
-    private JScrollPane scrollPane1;
     private JList<String> list1;
     private DefaultListModel<String> model;
+
     public AdventurersLogFrame() {
         super("Adventurer's Log Lookup");
         initComponents();
@@ -51,12 +50,12 @@ public class AdventurersLogFrame extends JFrame {
                 }
             }
         });
-        button1 = new JButton();
+        JButton button1 = new JButton();
         button1.addActionListener(l -> btnActionEvent());
         label2 = new JLabel();
         label3 = new JLabel();
         label4 = new JLabel();
-        scrollPane1 = new JScrollPane();
+        JScrollPane scrollPane1 = new JScrollPane();
         model = new DefaultListModel<>();
         list1 = new JList<>(model);
         list1.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -134,7 +133,7 @@ public class AdventurersLogFrame extends JFrame {
         setLocationRelativeTo(getOwner());
     }
 
-    public void btnActionEvent() {
+    void btnActionEvent() {
         String username = textField1.getText();
         model.clear();
         RSSLoader loader = new RSSLoader(username);
@@ -173,7 +172,7 @@ public class AdventurersLogFrame extends JFrame {
         list1.revalidate();
     }
 
-    public URL getIconURL(String element) throws MalformedURLException {
+    URL getIconURL(String element) throws MalformedURLException {
 
         File image = new File(Utilities.getContentDirectory() + "images/skills/monsterkill.png");
 

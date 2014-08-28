@@ -14,9 +14,9 @@ import java.net.URL;
 /**
  * Created by Kenneth on 6/15/2014.
  */
-public class RSSLoader {
+class RSSLoader {
 
-    private FeedItem[] elements;
+    private final FeedItem[] elements;
 
     public RSSLoader(String username) {
 
