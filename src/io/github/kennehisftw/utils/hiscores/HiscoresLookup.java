@@ -11,26 +11,24 @@ import java.util.Map;
 /**
  * Created by Kenneth on 6/15/2014.
  */
-public class HiscoresLookup {
+class HiscoresLookup {
 
-    public static String[] SKILL_NAMES = {
+    private static final String[] SKILL_NAMES = {
             "Overall", "Attack", "Defence", "Strength", "Constitution", "Ranged", "Prayer",
             "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting",
             "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming",
             "Runecrafting", "Hunter", "Construction", "Summoning", "Dungeoneering", "Divination"
     };
-    private final String username;
-    private final boolean isRS3;
-    private Map<Integer, Skill> skillMap = new LinkedHashMap<>();
+    private final Map<Integer, Skill> skillMap = new LinkedHashMap<>();
 
     public HiscoresLookup(String username, boolean isRS3) {
-        this.username = username;
-        this.isRS3 = isRS3;
+        String username1 = username;
+        boolean isRS31 = isRS3;
 
         String page = "";
         try {
-            page = Utilities.downloadString(this.isRS3 ? Constants.RS_HISCORES_URL + this.username
-                    : Constants.OLDSCHOOL_HISCORES_URL + this.username, true);
+            page = Utilities.downloadString(isRS31 ? Constants.RS_HISCORES_URL + username1
+                    : Constants.OLDSCHOOL_HISCORES_URL + username1, true);
         } catch (IOException exception) {
             exception.printStackTrace();
 

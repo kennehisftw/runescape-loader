@@ -41,11 +41,11 @@ public class VerticalFlowLayout implements LayoutManager2 {
         return sb.toString();
     }
 
-    public void setHGap(int hgap) {
+    void setHGap(int hgap) {
         this.hgap = hgap;
     }
 
-    public void setVGap(int vgap) {
+    void setVGap(int vgap) {
         this.vgap = vgap;
     }
 

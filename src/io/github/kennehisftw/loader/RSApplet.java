@@ -28,11 +28,6 @@ public class RSApplet extends JPanel implements AppletStub {
     private final JLabel imageLabel;
 
     /*
-        Image object for the loading image
-     */
-    private Image loadingImage;
-
-    /*
         The applet instance
      */
     private Applet applet;
@@ -63,7 +58,7 @@ public class RSApplet extends JPanel implements AppletStub {
         /*
             Load and create the loading image using the Toolkit class
          */
-        loadingImage = Utilities.getImage(Utilities.getContentDirectory() + "images/loading.gif");
+        Image loadingImage = Utilities.getImage(Utilities.getContentDirectory() + "images/loading.gif");
 
         /*
             Set the background color of the parent JPanel to black
@@ -174,8 +169,7 @@ public class RSApplet extends JPanel implements AppletStub {
     @Override
     public URL getDocumentBase() {
         try {
-            final URL documentBase = new URL(parameters.getParameter("codebase"));
-            return documentBase;
+            return new URL(parameters.getParameter("codebase"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -185,8 +179,7 @@ public class RSApplet extends JPanel implements AppletStub {
     @Override
     public URL getCodeBase() {
         try {
-            final URL documentBase = new URL(parameters.getParameter("codebase"));
-            return documentBase;
+            return new URL(parameters.getParameter("codebase"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

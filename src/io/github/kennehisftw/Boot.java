@@ -35,19 +35,12 @@ public class Boot {
                 final ZipFile zipFile = new ZipFile(Utilities.getContentDirectory() + "/images/images.zip");
                 zipFile.setRunInThread(false);
                 zipFile.extractAll(Utilities.getContentDirectory());
-
             } catch (ZipException e) {
                 e.printStackTrace();
                 String[] options = new String[]{"OK"};
-                JOptionPane.showOptionDialog(null,
-                        "Please go to " + Utilities.getContentDirectory() + " and delete the images folder, then restart the client.", "Error unzipping images",
-                        JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                JOptionPane.showOptionDialog(null, "Please go to " + Utilities.getContentDirectory() + " and delete the images folder, then restart the client.", "Error unzipping images", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
             }
         }
-
-
-
-
         /*
             Set the selection window visible using SwingUtils
          */

@@ -17,32 +17,17 @@ import java.awt.*;
 public class GameSelection extends JFrame {
 
     /*
-        Creates the button objects
+        The TrayIcon object
      */
-    private final JButton runeScape3, oldschool;
+    private final TrayIcon trayIcon;
     /*
-        Creates the ImagePanel object
+        Creates the ImgurUploader object
      */
-    private final ImagePanel imagePanel;
-    /*
-        Creates the image objects
-     */
-    private Image rs3Image, osImage, backGround, icon;
+    private final Imgur imgur;
     /*
         Create an applet object
      */
     private RSApplet applet;
-
-    /*
-        The TrayIcon object
-     */
-    private TrayIcon trayIcon;
-
-    /*
-        Creates the ImgurUploader object
-     */
-    private Imgur imgur;
-
     /*
         Creates a new GELookup class
      */
@@ -77,10 +62,10 @@ public class GameSelection extends JFrame {
         /*
             Initialize the images with ImageIO
          */
-        rs3Image = Utilities.getImage(Utilities.getContentDirectory() + "images/rs3.png");
-        osImage = Utilities.getImage(Utilities.getContentDirectory() + "images/os.png");
-        backGround = Utilities.getImage(Utilities.getContentDirectory() + "images/bg.png");
-        icon = Utilities.getImage(Utilities.getContentDirectory() + "images/icon.png");
+        Image rs3Image = Utilities.getImage(Utilities.getContentDirectory() + "images/rs3.png");
+        Image osImage = Utilities.getImage(Utilities.getContentDirectory() + "images/os.png");
+        Image backGround = Utilities.getImage(Utilities.getContentDirectory() + "images/bg.png");
+        Image icon = Utilities.getImage(Utilities.getContentDirectory() + "images/icon.png");
 
 
         /*
@@ -95,7 +80,9 @@ public class GameSelection extends JFrame {
         Thread thread4 = new Thread(() -> aLogForm = new AdventurersLogFrame());
         thread4.start();
 
-        new Thread(() -> prayerCalculator = new Prayer()).start();
+        Thread thread5 = new Thread(() -> prayerCalculator = new Prayer());
+        thread5.start();
+
 
         /*
             Initialize the tray icon
@@ -122,7 +109,7 @@ public class GameSelection extends JFrame {
         /*
                 Instantiate the ImagePanel
          */
-        imagePanel = new ImagePanel(backGround);
+        ImagePanel imagePanel = new ImagePanel(backGround);
 
         /*
             Set the content pane to the ImagePanel
@@ -137,7 +124,7 @@ public class GameSelection extends JFrame {
         /*
             Instantiate the JButtons and set the defaults
          */
-        runeScape3 = new JButton(new ImageIcon(rs3Image));
+        JButton runeScape3 = new JButton(new ImageIcon(rs3Image));
         runeScape3.setBorder(null);
         runeScape3.setSelectedIcon(null);
         runeScape3.setToolTipText("Load RuneScape 3");
@@ -179,7 +166,7 @@ public class GameSelection extends JFrame {
             thread.start();
         });
 
-        oldschool = new JButton(new ImageIcon(osImage));
+        JButton oldschool = new JButton(new ImageIcon(osImage));
         oldschool.setBorder(null);
         oldschool.setToolTipText("Load OldSchool RuneScape");
         oldschool.addActionListener(listener -> {
@@ -264,7 +251,7 @@ public class GameSelection extends JFrame {
      *
      * @return The newly created menu
      */
-    public PopupMenu createMenu() {
+    PopupMenu createMenu() {
         PopupMenu menu = new PopupMenu();
 
         Menu calculators = new Menu("Calculators");

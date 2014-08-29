@@ -17,16 +17,15 @@ public class HiscoresForm extends JFrame {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###");
 
-    private HiscoresLookup lookup;
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - asdf asdf
     private JTextField textField1;
     private JCheckBox checkBox1;
     private JLabel label1;
     private JLabel label2;
-    private JButton button1;
     private JPanel panel1;
     private JLabel label3;
+
     public HiscoresForm() {
         super("Player Stats Lookup");
         getContentPane().setLayout(new VerticalFlowLayout());
@@ -36,7 +35,7 @@ public class HiscoresForm extends JFrame {
 
     private void btnActionEvent() {
         panel1.removeAll();
-        lookup = new HiscoresLookup(textField1.getText(), !checkBox1.isSelected());
+        HiscoresLookup lookup = new HiscoresLookup(textField1.getText(), !checkBox1.isSelected());
         label1.setText(textField1.getText());
         setTitle("Player Stats Lookup - " + textField1.getText());
         panel1.setLayout(new VerticalFlowLayout());
@@ -62,8 +61,7 @@ public class HiscoresForm extends JFrame {
         JLabel label1 = new JLabel();
         JLabel label2 = new JLabel();
         JLabel label3 = new JLabel();
-        panel.setToolTipText("<html>Experience: " + decimalFormat.format(skill.getExperience())
-                + " <br>Rank: " + decimalFormat.format(skill.getRank()) + "</html>");
+        panel.setToolTipText("<html>Experience: " + decimalFormat.format(skill.getExperience()) + " <br>Rank: " + decimalFormat.format(skill.getRank()) + "</html>");
         label1.setIcon(new ImageIcon(Utilities.getImage(Utilities.getContentDirectory() + "images/skills/" + skill.getSkillName() + ".png")));
 
         label2.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -114,7 +112,7 @@ public class HiscoresForm extends JFrame {
         checkBox1 = new JCheckBox();
         label1 = new JLabel();
         label2 = new JLabel();
-        button1 = new JButton();
+        JButton button1 = new JButton();
         button1.addActionListener(listener -> btnActionEvent());
         panel1 = new JPanel();
         label3 = new JLabel();

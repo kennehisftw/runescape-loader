@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class GEItemLookup {
 
-    private Item[] items;
+    private final Item[] items;
 
     public GEItemLookup(int... itemIds) {
 
@@ -49,7 +49,7 @@ public class GEItemLookup {
         writer.close();
     }
 
-    public static void sleep(long ms) {
+    private static void sleep(long ms) {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
@@ -57,7 +57,7 @@ public class GEItemLookup {
         }
     }
 
-    public static int[] createAscendingArray(int start, int increment) {
+    private static int[] createAscendingArray(int start, int increment) {
         final int[] arr = new int[increment + 1];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = start + i;

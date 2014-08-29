@@ -11,20 +11,26 @@ import java.util.List;
 /**
  * Created by Kenneth on 7/25/2014.
  */
-public class Hiscores {
+class Hiscores {
 
+    private static final String[] SKILL_NAMES = {
+            "Overall", "Attack", "Defence", "Strength", "Constitution", "Ranged", "Prayer",
+            "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting",
+            "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming",
+            "Runecrafting", "Hunter", "Construction", "Summoning", "Dungeoneering", "Divination"
+    };
     private final List<Skill> skills = new LinkedList<>();
 
     public Hiscores(String username) {
         String[] stats = null;
         try {
             stats = getStatsData(username);
-        } catch(IOException a) {
+        } catch (IOException a) {
             System.out.println("Error grabbing hiscores data!");
             a.printStackTrace();
         }
 
-        for(int i = 0; i < SKILL_NAMES.length; i++) {
+        for (int i = 0; i < SKILL_NAMES.length; i++) {
             final String name = SKILL_NAMES[i];
             final int rank = Integer.parseInt(stats[i].split(",")[0]);
             final int level = Integer.parseInt(stats[i].split(",")[1]);
@@ -47,17 +53,10 @@ public class Hiscores {
         final List<String> dataList = new LinkedList<>();
         final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String data;
-        while((data = reader.readLine()) != null) {
+        while ((data = reader.readLine()) != null) {
             dataList.add(data);
         }
         return dataList.toArray(new String[dataList.size()]);
     }
-
-    public static String[] SKILL_NAMES = {
-            "Overall", "Attack", "Defence", "Strength", "Constitution", "Ranged", "Prayer",
-            "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting",
-            "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming",
-            "Runecrafting", "Hunter", "Construction", "Summoning", "Dungeoneering", "Divination"
-    };
 
 }
