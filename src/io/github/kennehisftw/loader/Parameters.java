@@ -18,22 +18,17 @@ class Parameters {
         Generic map for holding all the parameters we're going to parse
      */
     private static final Map<String, String> PARAMETER_MAP = new HashMap<>();
-    /*
-        Universal String base for both rs3 and 07 parameters
-     */
-    private static final String PARAMETER_BASE_URL = "runescape.com/l=0/jav_config.ws";
 
     /**
      * Creates a new instance of the parameters class.
      *
-     * @param worldId   the world you wish to load into
      * @param oldschool true for 07 false for rs3
      */
-    public Parameters(final int worldId, final boolean oldschool) {
+    public Parameters(final boolean oldschool) {
         /*
              Creates a new String with the arguments we defined to set the game and world we wish to load into
          */
-        final String parameterURL = "http://" + (oldschool ? "oldschool" : "world") + worldId + "." + PARAMETER_BASE_URL;
+        final String parameterURL = oldschool ? "http://oldschool42.runescape.com/l=0/jav_config.ws" : "http://www.runescape.com/k=3/l=0/jav_config.ws";
 
         /*
             Creates a null urlConnection object to be instantiated later.
@@ -49,9 +44,7 @@ class Parameters {
             exception.printStackTrace();
 
             String[] options = new String[]{"OK"};
-            JOptionPane.showOptionDialog(null,
-                    "Please ensure your internet connection is working properly and restart the client.", "Error connecting to website",
-                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+            JOptionPane.showOptionDialog(null, "Please ensure your internet connection is working properly and restart the client.", "Error connecting to website", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
          /*
@@ -62,7 +55,7 @@ class Parameters {
         /*
             Set the default timeout for the connection
          */
-        urlConnection.setConnectTimeout(5000);
+        urlConnection.setConnectTimeout(8000);
 
         /*
             Create a null BufferedReader object to be instantiated later.
@@ -78,9 +71,7 @@ class Parameters {
             exception.printStackTrace();
 
             String[] options = new String[]{"OK"};
-            JOptionPane.showOptionDialog(null,
-                    "Could not initialize reader, please restart the client.", "Error reading stream",
-                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+            JOptionPane.showOptionDialog(null, "Could not initialize reader, please restart the client.", "Error reading stream", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
         /*
@@ -143,9 +134,7 @@ class Parameters {
         } catch (IOException exception) {
             exception.printStackTrace();
             String[] options = new String[]{"OK"};
-            JOptionPane.showOptionDialog(null,
-                    "Please check your internet connection and restar the client!", "Error loading data",
-                    JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+            JOptionPane.showOptionDialog(null, "Please check your internet connection and restar the client!", "Error loading data", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         }
 
         System.out.println(getParameter("initial_jar"));

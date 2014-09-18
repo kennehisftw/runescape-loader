@@ -40,10 +40,9 @@ public class RSApplet extends JPanel implements AppletStub {
     /**
      * Instantiates the RSApplet class
      *
-     * @param worldId   the world you wish to load in to
      * @param oldschool true for 07, false for rs3
      */
-    public RSApplet(final int worldId, final boolean oldschool) {
+    public RSApplet(final boolean oldschool) {
 
         /*
             Set panel layout to BorderLayout
@@ -78,7 +77,7 @@ public class RSApplet extends JPanel implements AppletStub {
         /*
             Instantiate the parameters class. This will also start the parsing.
          */
-        parameters = new Parameters(worldId, oldschool);
+        parameters = new Parameters(oldschool);
     }
 
     /**
@@ -89,8 +88,7 @@ public class RSApplet extends JPanel implements AppletStub {
         /*
             Downloads the game pack from the website using parameters
          */
-        Utilities.downloadFile(parameters.getParameter("codebase") + parameters.getParameter("initial_jar"),
-                Utilities.getContentDirectory() + "game/" + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
+        Utilities.downloadFile(parameters.getParameter("codebase") + parameters.getParameter("initial_jar"), Utilities.getContentDirectory() + "game/" + (oldschool ? "os-" : "rs3-") + "gamepack.jar");
 
         /*
             Create a new file with the location of the gamepack we had just downloaded.

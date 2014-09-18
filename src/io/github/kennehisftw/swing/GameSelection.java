@@ -132,7 +132,7 @@ public class GameSelection extends JFrame {
             /*
                 Create the applet instance
              */
-            applet = new RSApplet(42, false);
+            applet = new RSApplet(false);
 
             /*
                 Remove all components from the content pane
@@ -173,7 +173,7 @@ public class GameSelection extends JFrame {
             /*
                 Create the applet instance
              */
-            applet = new RSApplet(42, true);
+            applet = new RSApplet(true);
 
             /*
                 Remove all components from the content pane

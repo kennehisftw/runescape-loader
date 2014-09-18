@@ -13,6 +13,7 @@ import java.text.ParseException;
  */
 public class Prayer extends JFrame {
     public static final int[] XP_TABLE = new int[120 + 2];
+
     static {
         int i = 0;
         for (int j = 0; j < 120; j++) {
