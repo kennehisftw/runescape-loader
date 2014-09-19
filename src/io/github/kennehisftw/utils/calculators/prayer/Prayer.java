@@ -12,7 +12,7 @@ import java.text.ParseException;
  * Created by Kenneth on 7/25/2014.
  */
 public class Prayer extends JFrame {
-    public static final int[] XP_TABLE = new int[120 + 2];
+    private static final int[] XP_TABLE = new int[120 + 2];
 
     static {
         int i = 0;
