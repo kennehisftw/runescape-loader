@@ -3,21 +3,23 @@ package io.github.kennehisftw.utils;
 import io.github.kennehisftw.utils.screenshot.Imgur;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 
 
 /**
@@ -28,35 +30,61 @@ public class Utilities {
     /**
      * Handy static method for downloading and saving files.
      *
-     * @param url      the complete web URL for the file
-     * @param location the complete destination including extension for the file
+     * @param site     the complete web URL for the file
+     * @param filename the complete destination including extension for the file
      * @return true if the file exists in the location, false if an exception is thrown or the file does not exist
      */
-    public static boolean downloadFile(String url, String location) {
-        try {
-            final URLConnection connection = new URL(url).openConnection();
-            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
-            final int contentLength = connection.getContentLength();
-            final File destination = new File(location);
-            if (destination.exists()) {
-                final URLConnection savedFileConnection = destination.toURI().toURL().openConnection();
-                if (savedFileConnection.getContentLength() == contentLength) {
-                    return true;
+    public static boolean downloadFile(String site, String filename) {
+        if (!new File(filename).exists()) {
+            JFrame frm = new JFrame();
+            JProgressBar current = new JProgressBar(0, 100);
+            current.setSize(50, 65);
+            current.setValue(0);
+            current.setStringPainted(true);
+            current.setBackground(Color.BLUE);
+            frm.add(current);
+            frm.setVisible(true);
+            frm.setLayout(new FlowLayout());
+            frm.setSize(300, 70);
+            frm.setLocationRelativeTo(null);
+            frm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            try {
+                HttpURLConnection connection = (HttpURLConnection) new URL(site).openConnection();
+                connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
+                int filesize = connection.getContentLength();
+                final File destination = new File(filename);
+                if (destination.exists()) {
+                    final URLConnection savedFileConnection = destination.toURI().toURL().openConnection();
+                    if (savedFileConnection.getContentLength() == filesize) {
+                        frm.dispose();
+                        return true;
+                    }
+                } else {
+                    final File parent = destination.getParentFile();
+                    if (!parent.exists()) parent.mkdirs();
                 }
-            } else {
-                final File parent = destination.getParentFile();
-                if (!parent.exists()) parent.mkdirs();
+                float totalDataRead = 0;
+                java.io.BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
+                java.io.FileOutputStream fos = new FileOutputStream(filename);
+                java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+                byte[] data = new byte[1024];
+                int i;
+                while ((i = in.read(data, 0, 1024)) >= 0) {
+                    totalDataRead = totalDataRead + i;
+                    bout.write(data, 0, i);
+                    float Percent = (totalDataRead * 100) / filesize;
+                    current.setValue((int) Percent);
+                }
+                bout.close();
+                in.close();
+            } catch (Exception e) {
+                JOptionPane.showConfirmDialog(null, e.getMessage(), "Error", JOptionPane.DEFAULT_OPTION);
             }
-            final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
-            final FileOutputStream fos = new FileOutputStream(destination);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            fos.close();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            return false;
+            System.out.println(site + "->" + filename);
+            frm.dispose();
+            return new File(filename).exists();
         }
-        System.out.println(url + "->" + location);
-        return new File(location).exists();
+        return false;
     }
 
     /**
