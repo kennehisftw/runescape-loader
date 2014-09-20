@@ -31,6 +31,7 @@ class ImagePanel extends JPanel {
         if (background != null) {
             graphics.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         }
+        repaint();
     }
 
 }

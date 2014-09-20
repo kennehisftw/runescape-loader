@@ -27,6 +27,7 @@ import java.net.URLConnection;
  */
 public class Utilities {
 
+
     /**
      * Handy static method for downloading and saving files.
      *
@@ -47,7 +48,7 @@ public class Utilities {
             frm.setLayout(new FlowLayout());
             frm.setSize(300, 70);
             frm.setLocationRelativeTo(null);
-            frm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(site).openConnection();
                 connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
@@ -64,25 +65,25 @@ public class Utilities {
                     if (!parent.exists()) parent.mkdirs();
                 }
                 float totalDataRead = 0;
-                java.io.BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
-                java.io.FileOutputStream fos = new FileOutputStream(filename);
-                java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+                BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
+                FileOutputStream fos = new FileOutputStream(filename);
+                BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
                 byte[] data = new byte[1024];
                 int i;
-                while ((i = in.read(data, 0, 1024)) >= 0) {
+                while (-1 != (i = in.read(data))) {
                     totalDataRead = totalDataRead + i;
-                    bout.write(data, 0, i);
                     float Percent = (totalDataRead * 100) / filesize;
                     current.setValue((int) Percent);
+                    bout.write(data, 0, i);
                 }
-                bout.close();
                 in.close();
+                bout.close();
             } catch (Exception e) {
                 JOptionPane.showConfirmDialog(null, e.getMessage(), "Error", JOptionPane.DEFAULT_OPTION);
             }
             System.out.println(site + "->" + filename);
             frm.dispose();
-            return new File(filename).exists();
+            return true;
         }
         return false;
     }

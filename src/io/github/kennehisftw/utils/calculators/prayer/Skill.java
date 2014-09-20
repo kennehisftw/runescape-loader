@@ -35,11 +35,6 @@ class Skill {
 
     @Override
     public String toString() {
-        return "Skill{" +
-                "skillName='" + skillName + '\'' +
-                ", rank=" + rank +
-                ", level=" + level +
-                ", experience=" + experience +
-                '}';
+        return "Skill{" + "skillName='" + skillName + '\'' + ", rank=" + rank + ", level=" + level + ", experience=" + experience + '}';
     }
 }
