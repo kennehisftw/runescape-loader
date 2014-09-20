@@ -6,6 +6,7 @@ import io.github.kennehisftw.utils.adventurerslog.AdventurersLogFrame;
 import io.github.kennehisftw.utils.calculators.prayer.Prayer;
 import io.github.kennehisftw.utils.grandexchange.GELookupForm;
 import io.github.kennehisftw.utils.hiscores.HiscoresForm;
+import io.github.kennehisftw.utils.hiscores.Sig;
 import io.github.kennehisftw.utils.screenshot.Imgur;
 
 import javax.swing.*;
@@ -275,6 +276,10 @@ public class GameSelection extends JFrame {
         MenuItem screenshot = new MenuItem("ScreenShot");
         screenshot.addActionListener(listener -> Utilities.screenshot(this, imgur, trayIcon));
         menu.add(screenshot);
+
+        MenuItem dynSig = new MenuItem("Dynamic Sig");
+        dynSig.addActionListener(listener -> new Sig());
+        menu.add(dynSig);
 
         MenuItem item = new MenuItem("Exit");
         item.addActionListener(listener -> System.exit(0));
