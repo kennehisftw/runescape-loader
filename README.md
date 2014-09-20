@@ -8,9 +8,10 @@ The screenshot function can also be used by pressing f12. By default, screenshot
 ![alt text](http://i.imgur.com/rIlJjD7.jpg "")
 ![alt text](http://i.imgur.com/fO6dFSY.png "")
 ![alt text](http://i.imgur.com/H9qDyEj.png "")
+![alt text](http://i.imgur.com/BjcNNJi.png "")
 
 ## How to get the loader
-Navigate to https://github.com/kennehisftw/runescape-loader/releases/
+Navigate to https://github.com/kennehisftw/runescape-loader/releases/ or https://github.com/Wyn10/runescape-loader
 
 Credits:
 Sven Olderaan (Crystal Mare) for assisting me with the Imgur api and allowing the integration of RuneLog.
