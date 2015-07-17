@@ -205,7 +205,6 @@ public class GameSelection extends JFrame {
                 Resize the frame to fit OldSchool
              */
             getContentPane().setPreferredSize(new Dimension(765, 503));
-            setResizable(false);
             pack();
 
             /*
